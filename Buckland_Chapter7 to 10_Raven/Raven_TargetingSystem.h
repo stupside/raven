@@ -41,8 +41,11 @@ public:
   //to null
   void       Update();
 
+  inline void SetTarget(Raven_Bot* target) { m_pCurrentTarget = target; }
+
+
   //returns true if there is a currently assigned target
-  bool       isTargetPresent()const{return m_pCurrentTarget != 0;}
+  inline bool       isTargetPresent()const{return m_pCurrentTarget != 0;}
 
   //returns true if the target is within the field of view of the owner
   bool       isTargetWithinFOV()const;
@@ -62,10 +65,10 @@ public:
   double      GetTimeTargetHasBeenOutOfView()const;
   
   //returns a pointer to the target. null if no target current.
-  Raven_Bot* GetTarget()const{return m_pCurrentTarget;}
+  inline Raven_Bot* GetTarget()const{return m_pCurrentTarget;}
 
   //sets the target pointer to null
-  void       ClearTarget(){m_pCurrentTarget=0;}
+  inline void       ClearTarget(){m_pCurrentTarget=0;}
 };
 
 
