@@ -53,6 +53,8 @@ private:
   //even if the target disappears from view.
   double            m_dAimPersistance;
 
+  FuzzyModule       m_FuzzyModule;
+
   //predicts where the target will be by the time it takes the current weapon's
   //projectile type to reach it. Used by TakeAimAndShoot
   Vector2D    PredictFuturePositionOfTarget()const;
@@ -72,6 +74,8 @@ public:
 
   //sets up the weapon map with just one weapon: the blaster
   void          Initialize();
+
+  void          InitializeFuzzyPrecision();
 
   //this method aims the bot's current weapon at the target (if there is a
   //target) and, if aimed correctly, fires a round. (Called each update-step

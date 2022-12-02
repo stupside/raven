@@ -57,6 +57,73 @@ void Raven_WeaponSystem::Initialize()
   m_WeaponMap[type_shotgun]         = 0;
   m_WeaponMap[type_rail_gun]        = 0;
   m_WeaponMap[type_rocket_launcher] = 0;
+
+  InitializeFuzzyPrecision();
+}
+
+void Raven_WeaponSystem::InitializeFuzzyPrecision()
+{
+    FuzzyVariable& DistanceToTarget = m_FuzzyModule.CreateFLV("Distance_To_Target");
+
+    FzSet& DistanceToTarget_Close = DistanceToTarget.AddLeftShoulderSet("Target_Close", 0, 25, 150);
+    FzSet& DistanceToTarget_Medium = DistanceToTarget.AddTriangularSet("Target_Medium", 25, 150, 300);
+    FzSet& DistanceToTarget_Far = DistanceToTarget.AddRightShoulderSet("Target_Far", 150, 300, 1000);
+
+    FuzzyVariable& Velocity = m_FuzzyModule.CreateFLV("Velocity");
+
+    FzSet& Velocity_Slow = Velocity.AddLeftShoulderSet("Velocity_Slow", 0, 25, 150);
+    FzSet& Velocity_Normal = Velocity.AddTriangularSet("Velocity_Normal", 25, 150, 300);
+    FzSet& Velocity_Fast = Velocity.AddRightShoulderSet("Velocity_Fast", 150, 300, 1000);
+
+    FuzzyVariable& VisibleTimeSpanTarget = m_FuzzyModule.CreateFLV("Visible_Time_Span_Target");
+
+    FzSet& VisibleTimeSpanTarget_Short = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", 0, 0, 0);
+    FzSet& VisibleTimeSpanTarget_Normal = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", 0, 0, 0);
+    FzSet& VisibleTimeSpanTarget_Long = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", 0, 0, 0);
+
+    FuzzyVariable& Accuracy = m_FuzzyModule.CreateFLV("Accuracy");
+
+    FzSet& AccuracyUnaccurate = Accuracy.AddLeftShoulderSet("Accuracy_Unaccurate", 0/100, 10/100, 25/100);
+    FzSet& AccuracyAccurate = Accuracy.AddTriangularSet("Accuracy_Accurate", 10/100, 25/100, 80/100);
+    FzSet& AccuracyPerfectAccurate = Accuracy.AddRightShoulderSet("Accuracy_Perfect_Accurate", 25/100, 80/100, 100/100);
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Close)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyUnaccurate);
+    
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyUnaccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Fast, DistanceToTarget_Medium)), AccuracyUnaccurate);
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Far)), AccuracyUnaccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Fast, DistanceToTarget_Far)), AccuracyUnaccurate);
+
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Slow, DistanceToTarget_Close)), AccuracyPerfectAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyUnaccurate);
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Fast, DistanceToTarget_Medium)), AccuracyUnaccurate);
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Normal, DistanceToTarget_Far)), AccuracyUnaccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Fast, DistanceToTarget_Far)), AccuracyUnaccurate);
+
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Close)), AccuracyPerfectAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyUnaccurate);
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyPerfectAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Medium)), AccuracyAccurate);
+
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyPerfectAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Far)), AccuracyAccurate);
+    m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Far)), AccuracyUnaccurate);
 }
 
 //-------------------------------- SelectWeapon -------------------------------
@@ -185,6 +252,13 @@ bool Raven_WeaponSystem::TakeAimAndShoot()const
   {
     //the position the weapon will be aimed at
     Vector2D AimingPos = m_pOwner->GetTargetBot()->Pos();
+
+    auto velocity = m_pOwner->Velocity();
+    auto distanceToTarget = Vector2D();
+
+    auto visibleTargetDuration = m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible();
+
+    auto derivation = GetCurrentWeapon()->GetRecoil(velocity, distanceToTarget, visibleTargetDuration);
     
     //if the current weapon is not an instant hit type gun the target position
     //must be adjusted to take into account the predicted movement of the 
