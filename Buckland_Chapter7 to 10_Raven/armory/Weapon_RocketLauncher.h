@@ -28,7 +28,7 @@ public:
 
   void Render();
 
-  void ShootAt(Vector2D pos);
+  void ShootAt(const Vector2D& pos);
 
   double GetDesirability(double DistToTarget);
 };
