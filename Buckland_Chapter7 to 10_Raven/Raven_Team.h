@@ -18,11 +18,16 @@ private:
 
 public:
 
-	explicit Raven_Team(const Raven_Bot* owner) : m_pOwner(owner), m_pMembers(std::map<int, Raven_Bot*>()) {
-
+	explicit Raven_Team() : m_pMembers(std::map<int, Raven_Bot*>()), m_pOwner(nullptr) {
 	}
 
-	const Raven_Bot* GetLeader() const;
+	inline void SetOwner(const Raven_Bot* owner) {
+		m_pOwner = owner;
+	}
+
+	const Raven_Bot* GetOwner() const;
+
+	const Raven_TargetingSystem* GetOwnerTargetSystem();
 
 	inline const std::map<int, Raven_Bot*> GetMembers() const {
 		return m_pMembers;
@@ -32,12 +37,21 @@ public:
 		return GetMembers().empty();
 	}
 
-	inline void AddMember(Raven_Bot* member) {
+	inline void AddMember(Raven_Bot* member, bool owner = false) {
+
 		m_pMembers.insert_or_assign(member->ID(), member);
+
+		member->AssignTeam(this);
+
+		if (owner) {
+			SetOwner(member);
+		}
 	}
 
 	inline void RemoveMember(Raven_Bot* member) {
 		m_pMembers.erase(member->ID());
+
+		member->AssignTeam(nullptr);
 	}
 
 	void SetTarget(Raven_Bot* target);
@@ -47,7 +61,7 @@ public:
 	}
 
 	inline bool IsLeading(const Raven_Bot* bot) const {
-		return GetLeader()->ID() == bot->ID();
+		return GetOwner()->ID() == bot->ID();
 	}
 };
 
