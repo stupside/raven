@@ -70,26 +70,44 @@ void Raven_Game::Clear()
 #endif
 
 	//delete the bots
-	std::list<Raven_Bot*>::iterator it = m_Bots.begin();
-	for (it; it != m_Bots.end(); ++it)
+	std::list<Raven_Bot*>::iterator BotIterator = m_Bots.begin();
+	for (BotIterator; BotIterator != m_Bots.end(); ++BotIterator)
 	{
+
+		auto* Bot = *BotIterator;
+
 #ifdef LOG_CREATIONAL_STUFF
-		debug_con << "deleting entity id: " << (*it)->ID() << " of type "
-			<< GetNameOfType((*it)->EntityType()) << "(" << (*it)->EntityType() << ")" << "";
+		debug_con << "deleting entity id: " << Bot->ID() << " of type "
+			<< GetNameOfType(Bot->EntityType()) << "(" << Bot->EntityType() << ")" << "";
 #endif
 
-		delete* it;
+		delete Bot;
+	}
+
+	//delete the teams
+	std::list<Raven_Team*>::iterator TeamIterator = m_lTeams.begin();
+	for (TeamIterator; TeamIterator != m_lTeams.end(); ++TeamIterator)
+	{
+
+		auto* Team = *TeamIterator;
+
+#ifdef LOG_CREATIONAL_STUFF
+		debug_con << "deleting team";
+#endif
+
+		delete Team;
 	}
 
 	//delete any active projectiles
-	std::list<Raven_Projectile*>::iterator curW = m_Projectiles.begin();
-	for (curW; curW != m_Projectiles.end(); ++curW)
+	std::list<Raven_Projectile*>::iterator ProjectIterator = m_Projectiles.begin();
+	for (ProjectIterator; ProjectIterator != m_Projectiles.end(); ++ProjectIterator)
 	{
+		auto* Projectile = *ProjectIterator;
 #ifdef LOG_CREATIONAL_STUFF
-		debug_con << "deleting projectile id: " << (*curW)->ID() << "";
+		debug_con << "deleting projectile id: " << Projectile->ID() << "";
 #endif
 
-		delete* curW;
+		delete Projectile;
 	}
 
 	//clear the containers
@@ -254,13 +272,14 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 		Bot->GetSteering()->WallAvoidanceOn();
 		Bot->GetSteering()->SeparationOn();
 
-		auto TeamIndex = index % (m_lTeams.size() - 1);
+		auto BotIndex = m_Bots.size() + index - 1;
+		auto TeamIndex = BotIndex % (m_lTeams.size() - 1);
 
 		auto TeamIterator = m_lTeams.begin();
 
 		std::advance(TeamIterator, TeamIndex);
 
-		auto Team = *TeamIterator;
+		auto* Team = *TeamIterator;
 
 		Team->AddMember(Bot);
 
