@@ -2,28 +2,26 @@
 
 const Raven_Bot* Raven_Team::GetOwner() const
 {
-	if (!CanLead(m_pOwner)) {
+	if (CanLead(m_pOwner))
+		return m_pOwner;
 
-		Raven_Bot* owner = nullptr;
+	Raven_Bot* owner = nullptr;
 
-		for (auto bot : GetMembers()) {
+	for (auto bot : GetMembers()) {
 
-			if (CanLead(bot.second)) {
+		if (CanLead(bot.second)) {
 
-				if (bot.second->isPossessed()) {
-					return bot.second;
-				}
-				else if (owner == nullptr)
-				{
-					owner = bot.second;
-				}
+			if (bot.second->isPossessed()) {
+				return bot.second;
+			}
+			else if (owner == nullptr)
+			{
+				owner = bot.second;
 			}
 		}
-
-		return owner;
 	}
 
-	return m_pOwner;
+	return owner;
 }
 
 const Raven_TargetingSystem* Raven_Team::GetOwnerTargetSystem()
@@ -34,6 +32,9 @@ const Raven_TargetingSystem* Raven_Team::GetOwnerTargetSystem()
 void Raven_Team::SetTarget(Raven_Bot* target)
 {
 	auto From = GetOwner()->ID();
+
+	if (target->ID() == From) return;
+	if (GetMembers().at(target->ID())) return;
 
 	for (auto Bot : GetMembers()) {
 
