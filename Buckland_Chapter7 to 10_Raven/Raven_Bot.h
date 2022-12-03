@@ -130,9 +130,11 @@ public:
 	inline Raven_Team* GetTeam() {
 		return m_pTeam;
 	}
-	void CreateTeam();
 
-	void JoinTeam(Raven_Team* team);
+	void AssignTeam(Raven_Team* team);
+
+	bool JoinTeam(Raven_Team* team);
+	bool LeaveTeam();
 
 	virtual ~Raven_Bot();
 
