@@ -83,35 +83,28 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
 	m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
 }
 
-void Raven_Bot::CreateTeam()
+void Raven_Bot::AssignTeam(Raven_Team* team)
 {
-	if (m_pTeam) {
-		auto IsLeader = m_pTeam->IsLeading(this);
-
-		if (IsLeader) return;
-
-		m_pTeam->RemoveMember(this);
-	}
-
-	m_pTeam = new Raven_Team(this);
+	m_pTeam = team;
 }
 
-void Raven_Bot::JoinTeam(Raven_Team* team)
+
+bool Raven_Bot::JoinTeam(Raven_Team* team)
+{
+	team->AddMember(this);
+
+	return true;
+}
+
+bool Raven_Bot::LeaveTeam()
 {
 	if (m_pTeam) {
-		auto IsLeader = m_pTeam->IsLeading(this);
+		m_pTeam->RemoveMember(this);
 
-		if (IsLeader) {
-			return;
-		}
-		else {
-			m_pTeam->RemoveMember(this);
-		}
+		return true;
 	}
 
-	m_pTeam = team;
-
-	m_pTeam->AddMember(this);
+	return false;
 }
 
 //-------------------------------- dtor ---------------------------------------
