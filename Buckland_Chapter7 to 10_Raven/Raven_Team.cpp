@@ -2,12 +2,25 @@
 
 const Raven_Bot* Raven_Team::GetOwner() const
 {
-	if (m_pOwner == nullptr || m_pOwner->isDead()) {
+	if (!CanLead(m_pOwner)) {
+
+		Raven_Bot* owner = nullptr;
+
 		for (auto bot : GetMembers()) {
-			if (CanLead(bot.second)) return bot.second;
+
+			if (CanLead(bot.second)) {
+
+				if (bot.second->isPossessed()) {
+					return bot.second;
+				}
+				else if (owner == nullptr)
+				{
+					owner = bot.second;
+				}
+			}
 		}
 
-		return nullptr;
+		return owner;
 	}
 
 	return m_pOwner;
