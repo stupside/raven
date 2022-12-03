@@ -153,14 +153,25 @@ void Raven_Bot::Update()
 	UpdateMovement();
 
 	//if the bot is under AI control but not scripted
-	if (!isPossessed())
-	{
+	if (isPossessed()) {
+		//if (m_pTeam) {
+
+		//	auto IsLeader = m_pTeam->IsLeading(this);
+
+		//	if (IsLeader) {
+
+		//		auto Target = m_pTargSys->GetTarget();
+
+		//		m_pTeam->SetTarget(Target);
+		//	}
+		//}
+	}
+	else {
 		//examine all the opponents in the bots sensory memory and select one
 		//to be the current target
 		if (m_pTargetSelectionRegulator->isReady())
 		{
 			if (m_pTeam) {
-
 				auto IsLeader = m_pTeam->IsLeading(this);
 
 				if (IsLeader) {
@@ -399,6 +410,9 @@ void Raven_Bot::TakePossession()
 	if (!(isSpawning() || isDead()))
 	{
 		m_bPossessed = true;
+
+		if (m_pTeam)
+			m_pTeam->SetOwner(this);
 
 		debug_con << "Player Possesses bot " << this->ID() << "";
 	}

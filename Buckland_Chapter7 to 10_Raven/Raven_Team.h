@@ -57,7 +57,10 @@ public:
 	void SetTarget(Raven_Bot* target);
 
 	inline bool CanLead(const Raven_Bot* bot) const {
-		return bot->isAlive() && !bot->isSpawning();
+		if(bot)
+			return bot->isAlive() && (!bot->isSpawning());
+
+		return false;
 	}
 
 	inline bool IsLeading(const Raven_Bot* bot) const {
