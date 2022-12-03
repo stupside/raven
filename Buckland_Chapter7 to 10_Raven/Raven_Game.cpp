@@ -9,6 +9,7 @@
 #include "2d/WallIntersectionTests.h"
 #include "Raven_Map.h"
 #include "Raven_Door.h"
+#include "Raven_Team.h"
 #include "Raven_UserOptions.h"
 #include "Time/PrecisionTimer.h"
 #include "Raven_SensoryMemory.h"
@@ -246,46 +247,30 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //-----------------------------------------------------------------------------
 void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 {
+	for (auto index = 0; index <= NumBotsToAdd; index++) {
 
-	while (NumBotsToAdd--)
-	{
-		//create a bot. (its position is irrelevant at this point because it will
-		//not be rendered until it is spawned)
-		Raven_Bot* rb = new Raven_Bot(this, Vector2D());
+		Raven_Bot* Bot = new Raven_Bot(this, Vector2D());
 
-		//switch the default steering behaviors on
-		rb->GetSteering()->WallAvoidanceOn();
-		rb->GetSteering()->SeparationOn();
+		Bot->GetSteering()->WallAvoidanceOn();
+		Bot->GetSteering()->SeparationOn();
 
-		m_Bots.push_back(rb);
+		auto TeamIndex = index % (m_lTeams.size() - 1);
 
-		//register the bot with the entity manager
-		EntityMgr->RegisterEntity(rb);
+		auto TeamIterator = m_lTeams.begin();
 
+		std::advance(TeamIterator, TeamIndex);
+
+		auto Team = *TeamIterator;
+
+		Team->AddMember(Bot);
+
+		m_Bots.push_back(Bot);
+
+		EntityMgr->RegisterEntity(Bot);
 
 #ifdef LOG_CREATIONAL_STUFF
-		debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
+		debug_con << "Adding bot with ID " << ttos(Bot->ID()) << "";
 #endif
-
-		auto BotCount = m_Bots.size();
-
-		auto NumberOfTeams = 2;
-
-		for (auto i = 0; i < NumberOfTeams; i++) {
-
-			auto iterator = m_Bots.begin();
-
-			std::advance(iterator, i);
-
-			auto bot = *iterator;
-
-			bot->CreateTeam();
-
-			auto team = bot->GetTeam();
-			
-			// TODO: dispatch bots in teams
-
-		}
 	}
 }
 
@@ -412,16 +397,24 @@ bool Raven_Game::LoadMap(const std::string& filename)
 	//make sure the entity manager is reset
 	EntityMgr->Reset();
 
-
 	//load the new map data
 	if (m_pMap->LoadMap(filename))
 	{
+		AddTeams(script->GetInt("NumTeams"));
+
 		AddBots(script->GetInt("NumBots"));
 
 		return true;
 	}
 
 	return false;
+}
+
+void Raven_Game::AddTeams(unsigned int NumTeamsToAdd)
+{
+	for (auto index = 0; index < NumTeamsToAdd; index++) {
+		m_lTeams.push_back(new Raven_Team());
+	}
 }
 
 

@@ -44,6 +44,8 @@ private:
   //a list of all the bots that are inhabiting the map
   std::list<Raven_Bot*>            m_Bots;
 
+  std::list<Raven_Team*>            m_lTeams;
+
   //the user may select a bot to control manually. This is a pointer to that
   //bot
   Raven_Bot*                       m_pSelectedBot;
@@ -92,6 +94,8 @@ public:
 
   //loads an environment from a file
   bool LoadMap(const std::string& FileName); 
+
+  void AddTeams(unsigned int NumTeamsToAdd);
 
   void AddBots(unsigned int NumBotsToAdd);
   void AddRocket(Raven_Bot* shooter, Vector2D target);
