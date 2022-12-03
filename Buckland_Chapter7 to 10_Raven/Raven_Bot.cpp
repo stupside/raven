@@ -165,6 +165,8 @@ void Raven_Bot::Update()
 
 				if (IsLeader) {
 
+					m_pTargSys->Update();
+
 					auto Target = m_pTargSys->GetTarget();
 
 					m_pTeam->SetTarget(Target);
