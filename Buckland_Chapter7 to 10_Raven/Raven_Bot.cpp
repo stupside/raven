@@ -20,11 +20,12 @@
 #include "goals/Raven_Goal_Types.h"
 #include "goals/Goal_Think.h"
 
-
 #include "Debug/DebugConsole.h"
 
+#include "Raven_Learner.h"
+
 //-------------------------- ctor ---------------------------------------------
-Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
+Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool learn) :
 	MovingEntity(pos,
 		script->GetDouble("Bot_Scale"),
 		Vector2D(0, 0),
@@ -46,8 +47,8 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
 	m_iScore(0),
 	m_Status(Status::spawning),
 	m_bPossessed(false),
-	m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV")))
-
+	m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV"))),
+	m_pTeam(nullptr)
 {
 	SetEntityType(type_bot);
 
@@ -81,6 +82,8 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
 		script->GetDouble("Bot_AimPersistance"));
 
 	m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
+
+	m_Learner = new Raven_Learner(this);
 }
 
 void Raven_Bot::AssignTeam(Raven_Team* team)
@@ -105,6 +108,9 @@ Raven_Bot::~Raven_Bot()
 	delete m_pVisionUpdateRegulator;
 	delete m_pWeaponSys;
 	delete m_pSensoryMem;
+
+	if (m_Learner)
+		delete m_Learner;
 }
 
 //------------------------------- Spawn ---------------------------------------
@@ -162,9 +168,15 @@ void Raven_Bot::Update()
 
 		//this method aims the bot's current weapon at the current target
 		//and takes a shot if a shot is possible
-		m_pWeaponSys->TakeAimAndShoot();
+		auto shoot = m_pWeaponSys->TakeAimAndShoot();
+
+		if (m_pTargSys->isTargetPresent()) {
+			if(m_Learner)
+				m_Learner->Compute(shoot);
+		}
 	}
 }
+
 
 
 //------------------------- UpdateMovement ------------------------------------
@@ -278,7 +290,7 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 		return true;
 	}
 
-	case Msg_TeamTarget: 
+	case Msg_TeamTarget:
 	{
 		Raven_Bot* Target = DereferenceToType<Raven_Bot*>(msg.ExtraInfo);
 
