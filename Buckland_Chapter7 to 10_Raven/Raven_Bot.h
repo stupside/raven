@@ -15,9 +15,11 @@
 
 #include "game/MovingEntity.h"
 #include "misc/utils.h"
+
 #include "Raven_TargetingSystem.h"
 
 class Raven_Team;
+class Raven_Learner;
 class Raven_PathPlanner;
 class Raven_Steering;
 class Raven_Game;
@@ -28,7 +30,6 @@ class Raven_Bot;
 class Goal_Think;
 class Raven_WeaponSystem;
 class Raven_SensoryMemory;
-
 
 class Raven_Bot : public MovingEntity
 {
@@ -44,6 +45,7 @@ private:
 	//a pointer to the world data
 	Raven_Game* m_pWorld;
 
+	Raven_Learner* m_Learner;
 	Raven_Team* m_pTeam;
 
 	//this object handles the arbitration and processing of high level goals
@@ -125,7 +127,7 @@ private:
 
 public:
 
-	Raven_Bot(Raven_Game* world, Vector2D pos);
+	Raven_Bot(Raven_Game* world, Vector2D pos, bool learn = false);
 
 	inline Raven_Team* GetTeam() const {
 		return m_pTeam;

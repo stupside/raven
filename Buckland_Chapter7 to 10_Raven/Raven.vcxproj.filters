@@ -77,6 +77,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{f3f5ab42-49d8-4348-aa63-66655abd9be1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI\network">
+      <UniqueIdentifier>{5cf14f64-d524-4fc9-91fd-4c26a3dfb86d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -270,6 +273,15 @@
     </ClCompile>
     <ClCompile Include="Raven_Team.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_Learner.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CNeuralNet.cpp">
+      <Filter>AI\network</Filter>
+    </ClCompile>
+    <ClCompile Include="CData.cpp">
+      <Filter>AI\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -611,6 +623,15 @@
     </ClInclude>
     <ClInclude Include="Raven_Team.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_Learner.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CData.h">
+      <Filter>AI\network</Filter>
+    </ClInclude>
+    <ClInclude Include="CNeuralNet.h">
+      <Filter>AI\network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
