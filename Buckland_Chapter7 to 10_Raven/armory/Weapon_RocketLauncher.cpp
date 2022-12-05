@@ -44,7 +44,7 @@ RocketLauncher::RocketLauncher(Raven_Bot*   owner):
 
 //------------------------------ ShootAt --------------------------------------
 //-----------------------------------------------------------------------------
-inline void RocketLauncher::ShootAt(const Vector2D& pos)
+void RocketLauncher::ShootAt(Vector2D pos)
 { 
   if (NumRoundsRemaining() > 0 && isReadyForNextShot())
   {
