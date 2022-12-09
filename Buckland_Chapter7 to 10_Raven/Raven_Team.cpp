@@ -24,9 +24,33 @@ const Raven_Bot* Raven_Team::GetOwner() const
 	return owner;
 }
 
-const Raven_TargetingSystem* Raven_Team::GetOwnerTargetSystem()
+void Raven_Team::SetOwner(Raven_Bot* owner) {
+	m_pOwner = owner;
+
+	if (owner)
+	{
+		if (HasMember(owner)) return;
+
+		AddMember(owner);
+	}
+}
+
+
+void Raven_Team::AddMember(Raven_Bot* member)
 {
-	return GetOwner()->GetTargetSys();
+	member->AssignTeam(this);
+
+	m_pMembers.insert_or_assign(member->ID(), member);
+}
+
+void Raven_Team::RemoveMember(Raven_Bot* member)
+{
+	member->AssignTeam(nullptr);
+
+	if (IsLeading(member))
+		SetOwner(nullptr);
+
+	m_pMembers.erase(member->ID());
 }
 
 void Raven_Team::SetTarget(Raven_Bot* target)
@@ -35,7 +59,7 @@ void Raven_Team::SetTarget(Raven_Bot* target)
 
 	if (IsLeading(target)) return;
 
-	if (GetMembers().at(target->ID()) == nullptr) return;
+	if (HasMember(target)) return;
 
 	for (auto Bot : GetMembers()) {
 
@@ -46,4 +70,20 @@ void Raven_Team::SetTarget(Raven_Bot* target)
 
 		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, From, To, Msg_TeamTarget, target);
 	}
+}
+
+bool Raven_Team::CanLead(const Raven_Bot* bot) const
+{
+	if (bot)
+		return bot->isAlive() && !bot->isSpawning();
+
+	return false;
+}
+
+bool Raven_Team::IsLeading(const Raven_Bot* bot) const
+{
+	if (HasMember(bot))
+		return GetOwner()->ID() == bot->ID();
+
+	return false;
 }
