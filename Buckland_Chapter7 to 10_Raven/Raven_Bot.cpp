@@ -44,7 +44,7 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
 	m_iNumUpdatesHitPersistant((int)(FrameRate* script->GetDouble("HitFlashTime"))),
 	m_bHit(false),
 	m_iScore(0),
-	m_Status(spawning),
+	m_Status(Status::spawning),
 	m_bPossessed(false),
 	m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV")))
 
@@ -86,25 +86,6 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
 void Raven_Bot::AssignTeam(Raven_Team* team)
 {
 	m_pTeam = team;
-}
-
-
-bool Raven_Bot::JoinTeam(Raven_Team* team)
-{
-	team->AddMember(this);
-
-	return true;
-}
-
-bool Raven_Bot::LeaveTeam()
-{
-	if (m_pTeam) {
-		m_pTeam->RemoveMember(this);
-
-		return true;
-	}
-
-	return false;
 }
 
 //-------------------------------- dtor ---------------------------------------
