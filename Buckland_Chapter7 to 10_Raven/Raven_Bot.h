@@ -34,7 +34,7 @@ class Raven_Bot : public MovingEntity
 {
 private:
 
-	enum Status { alive, dead, spawning };
+	enum class Status { alive, dead, spawning };
 
 private:
 
@@ -44,7 +44,7 @@ private:
 	//a pointer to the world data
 	Raven_Game* m_pWorld;
 
-	Raven_Team*						m_pTeam;
+	Raven_Team* m_pTeam;
 
 	//this object handles the arbitration and processing of high level goals
 	Goal_Think* m_pBrain;
@@ -133,25 +133,18 @@ public:
 
 	void AssignTeam(Raven_Team* team);
 
-	bool JoinTeam(Raven_Team* team);
-	bool LeaveTeam();
-
 	virtual ~Raven_Bot();
 
-	//the usual suspects
 	void         Render();
 	void         Update();
 	bool         HandleMessage(const Telegram& msg);
 	void         Write(std::ostream& os)const {/*not implemented*/ }
 	void         Read(std::ifstream& is) {/*not implemented*/ }
 
-	//this rotates the bot's heading until it is facing directly at the target
-	//position. Returns false if not facing at the target.
 	bool          RotateFacingTowardPosition(Vector2D target);
 
-	//methods for accessing attribute data
-	int           Health()const { return m_iHealth; }
-	int           MaxHealth()const { return m_iMaxHealth; }
+	inline int           Health()const { return m_iHealth; }
+	inline int           MaxHealth()const { return m_iMaxHealth; }
 	void          ReduceHealth(unsigned int val);
 	void          IncreaseHealth(unsigned int val);
 	void          RestoreHealthToMaximum();
@@ -159,52 +152,39 @@ public:
 	int           Score()const { return m_iScore; }
 	void          IncrementScore() { ++m_iScore; }
 
-	Vector2D      Facing()const { return m_vFacing; }
-	double        FieldOfView()const { return m_dFieldOfView; }
+	inline Vector2D      Facing()const { return m_vFacing; }
+	inline double        FieldOfView()const { return m_dFieldOfView; }
 
-	bool          isPossessed()const { return m_bPossessed; }
-	bool          isDead()const { return m_Status == dead; }
-	bool          isAlive()const { return m_Status == alive; }
-	bool          isSpawning()const { return m_Status == spawning; }
+	inline bool          isPossessed()const { return m_bPossessed; }
+	inline bool          isDead()const { return m_Status == Status::dead; }
+	inline bool          isAlive()const { return m_Status == Status::alive; }
+	inline bool          isSpawning()const { return m_Status == Status::spawning; }
 
-	void          SetSpawning() { m_Status = spawning; }
-	void          SetDead() { m_Status = dead; }
-	void          SetAlive() { m_Status = alive; }
+	inline void          SetSpawning() { m_Status = Status::spawning; }
+	inline void          SetDead() { m_Status = Status::dead; }
+	inline void          SetAlive() { m_Status = Status::alive; }
 
-	//returns a value indicating the time in seconds it will take the bot
-	//to reach the given position at its current speed.
 	double        CalculateTimeToReachPosition(Vector2D pos)const;
 
-	//returns true if the bot is close to the given position
 	bool          isAtPosition(Vector2D pos)const;
 
-
-	//interface for human player
 	void          FireWeapon(Vector2D pos);
 	void          ChangeWeapon(unsigned int type);
 	void          TakePossession();
 	void          Exorcise();
 
-
-	//spawns the bot at the given position
 	void          Spawn(Vector2D pos);
 
-	//returns true if this bot is ready to test against all triggers
 	bool          isReadyForTriggerUpdate()const;
 
 	//returns true if the bot has line of sight to the given position.
 	bool          hasLOSto(Vector2D pos)const;
 
-	//returns true if this bot can move directly to the given position
-	//without bumping into any walls
 	bool          canWalkTo(Vector2D pos)const;
 
-	//similar to above. Returns true if the bot can move between the two
-	//given positions without bumping into any walls
 	bool          canWalkBetween(Vector2D from, Vector2D to)const;
 
-	//returns true if there is space enough to step in the indicated direction
-	//If true PositionOfStep will be assigned the offset position
+
 	bool          canStepLeft(Vector2D& PositionOfStep)const;
 	bool          canStepRight(Vector2D& PositionOfStep)const;
 	bool          canStepForward(Vector2D& PositionOfStep)const;
