@@ -127,7 +127,7 @@ public:
 
 	Raven_Bot(Raven_Game* world, Vector2D pos);
 
-	inline Raven_Team* GetTeam() {
+	inline Raven_Team* GetTeam() const {
 		return m_pTeam;
 	}
 
