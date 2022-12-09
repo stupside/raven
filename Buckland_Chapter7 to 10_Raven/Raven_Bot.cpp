@@ -383,7 +383,7 @@ void Raven_Bot::TakePossession()
 	{
 		m_bPossessed = true;
 
-		if (m_pTeam)
+		if (GetTeam())
 			m_pTeam->SetOwner(this);
 
 		debug_con << "Player Possesses bot " << this->ID() << "";

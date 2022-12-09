@@ -16,68 +16,37 @@ private:
 
 	std::map<int, Raven_Bot*> m_pMembers;
 
-public:
-
-	explicit Raven_Team() : m_pMembers(std::map<int, Raven_Bot*>()), m_pOwner(nullptr) {
-	}
-
-	inline void SetOwner(Raven_Bot* owner) {
-		m_pOwner = owner;
-
-		if (owner)
-		{
-			if (HasMember(owner)) return;
-
-			AddMember(owner);
-		}
-	}
-
-	const Raven_Bot* GetOwner() const;
-
-	const Raven_TargetingSystem* GetOwnerTargetSystem();
-
-	inline const std::map<int, Raven_Bot*> GetMembers() const {
-		return m_pMembers;
-	}
-
 	inline bool HasMembers() const {
 		return GetMembers().empty();
 	}
 
 	inline bool HasMember(const Raven_Bot* bot) const {
-		return GetMembers().at(bot->ID());
+		if (HasMembers())
+			return GetMembers().at(bot->ID());
+
+		return false;
 	}
 
-	inline void AddMember(Raven_Bot* member) {
-		member->AssignTeam(this);
+public:
 
-		m_pMembers.insert_or_assign(member->ID(), member);
+	explicit Raven_Team() : m_pMembers(std::map<int, Raven_Bot*>()), m_pOwner(nullptr) {
 	}
 
-	inline void RemoveMember(Raven_Bot* member) {
+	void SetOwner(Raven_Bot* owner);
 
-		member->AssignTeam(nullptr);
+	const Raven_Bot* GetOwner() const;
 
-		if (m_pOwner->ID() == member->ID())
-			SetOwner(nullptr);
-
-		m_pMembers.erase(member->ID());
+	inline const std::map<int, Raven_Bot*> GetMembers() const {
+		return m_pMembers;
 	}
+
+	void AddMember(Raven_Bot* member);
+	void RemoveMember(Raven_Bot* member);
 
 	void SetTarget(Raven_Bot* target);
 
-	inline bool CanLead(const Raven_Bot* bot) const {
-		if(bot)
-			return bot->isAlive() && !bot->isSpawning();
+	bool CanLead(const Raven_Bot* bot) const;
 
-		return false;
-	}
-
-	inline bool IsLeading(const Raven_Bot* bot) const {
-		if(HasMember(bot))
-			return GetOwner()->ID() == bot->ID();
-
-		return false;
-	}
+	bool IsLeading(const Raven_Bot* bot) const;
 };
 
