@@ -33,8 +33,9 @@ void Raven_Team::SetTarget(Raven_Bot* target)
 {
 	auto From = GetOwner()->ID();
 
-	if (target->ID() == From) return;
-	if (GetMembers().at(target->ID())) return;
+	if (IsLeading(target)) return;
+
+	if (GetMembers().at(target->ID()) == nullptr) return;
 
 	for (auto Bot : GetMembers()) {
 
