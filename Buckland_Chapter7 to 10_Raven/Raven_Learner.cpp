@@ -12,16 +12,17 @@
 #include <fstream>
 
 #include <thread>
+#include <Debug/DebugConsole.h>
 
 #define GET_VARIABLE_NAME(variable) (#variable)
 #define MAX_TRAINING_CDATA_SIZE 200
 #define MIN_TRAINING_BOT_SCORE 1
 
-#define SHOOT 1
-#define DONT_SHOOT 0
-
 Raven_Learner::Datas Raven_Learner::ComputeShoot(bool HasShooted)
 {
+
+	debug_con << "Computing shoot datas for bot " << ID();
+
 	auto* Bot = this;
 
 	const auto Datas = GetDataSet();
@@ -127,7 +128,13 @@ void Raven_Learner::Neural::Train()
 
 bool Raven_Learner::Neural::TryStartTrainThread()
 {
-	if (m_bTraining) return false;
+	if (m_bTraining) {
+		debug_con << "Starting train thread already running" << "";
+
+		return false;
+	}
+
+	debug_con << "Starting train thread" << "";
 
 	auto thread = std::thread(&Raven_Learner::Neural::Train, this);
 

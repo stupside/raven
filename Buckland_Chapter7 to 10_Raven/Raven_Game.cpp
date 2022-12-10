@@ -432,7 +432,7 @@ bool Raven_Game::LoadMap(const std::string& filename)
 void Raven_Game::AddTeams(unsigned int NumTeamsToAdd)
 {
 	for (auto index = 0; index < NumTeamsToAdd; index++) {
-		m_lTeams.push_back(new Raven_Team());
+		m_lTeams.push_back(new Raven_Team(index));
 	}
 }
 

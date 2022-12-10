@@ -1,4 +1,5 @@
 #include "Raven_Team.h"
+#include <Debug/DebugConsole.h>
 
 const Raven_Bot* Raven_Team::GetOwner() const
 {
@@ -27,6 +28,8 @@ const Raven_Bot* Raven_Team::GetOwner() const
 void Raven_Team::SetOwner(Raven_Bot* owner) {
 	m_pOwner = owner;
 
+	debug_con << "Set " << owner->ID() << " Owner of team" << ID() << "";
+
 	if (owner)
 	{
 		if (HasMember(owner)) return;
@@ -41,6 +44,8 @@ void Raven_Team::AddMember(Raven_Bot* member)
 	member->AssignTeam(this);
 
 	m_pMembers.insert_or_assign(member->ID(), member);
+
+	debug_con << "Added bot " << member->ID() << " to team" << ID() << "";
 }
 
 void Raven_Team::RemoveMember(Raven_Bot* member)
@@ -51,6 +56,8 @@ void Raven_Team::RemoveMember(Raven_Bot* member)
 		SetOwner(nullptr);
 
 	m_pMembers.erase(member->ID());
+
+	debug_con << "Removed bot " << member->ID() << " from team" << ID() << "";
 }
 
 void Raven_Team::SetTarget(Raven_Bot* target)
@@ -70,6 +77,9 @@ void Raven_Team::SetTarget(Raven_Bot* target)
 
 		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, From, To, Msg_TeamTarget, target);
 	}
+
+	debug_con << "Target bot " << target->ID() << " for team" << ID() << "";
+
 }
 
 bool Raven_Team::CanLead(const Raven_Bot* bot) const

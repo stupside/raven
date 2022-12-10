@@ -12,6 +12,9 @@
 class Raven_Team
 {
 private:
+
+	unsigned int m_ID;
+
 	const Raven_Bot* m_pOwner;
 
 	std::map<int, Raven_Bot*> m_pMembers;
@@ -29,7 +32,11 @@ private:
 
 public:
 
-	explicit Raven_Team() : m_pMembers(std::map<int, Raven_Bot*>()), m_pOwner(nullptr) {
+	explicit Raven_Team(unsigned int id) : m_ID(id), m_pMembers(std::map<int, Raven_Bot*>()), m_pOwner(nullptr) {
+	}
+
+	inline unsigned int ID() const {
+		return m_ID;
 	}
 
 	void SetOwner(Raven_Bot* owner);
