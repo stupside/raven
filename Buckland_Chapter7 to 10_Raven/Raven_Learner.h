@@ -3,7 +3,7 @@
 
 #include "CNeuralNet.h"
 
-class Raven_Learner
+class Raven_Learner : public Raven_Bot
 {
 public:
 	typedef double Data;
@@ -37,16 +37,22 @@ public:
 	};
 private:
 
-	const Raven_Bot* m_pBot;
+	Datas ComputeShoot(bool shoot);
+
+	Datas GetTargetSet() const;
+	Datas GetDataSet() const;
 
 public:
 
-	Raven_Learner(const Raven_Bot* bot) : m_pBot(bot) {
+	Raven_Learner(Raven_Game* world, Vector2D pos) : Raven_Bot(world, pos) {
 	}
 
-	Datas Compute(bool shoot);
+	bool MayShoot() override;
 
-	~Raven_Learner() {
-	}
+	bool HandleMessage(const Telegram& msg) override;
+
+	void Update() override;
 };
+
+
 

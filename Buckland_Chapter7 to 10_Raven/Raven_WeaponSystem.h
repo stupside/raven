@@ -14,10 +14,11 @@
 #include <map>
 #include "2d/vector2d.h"
 
+#include "fuzzy/FuzzyModule.h"
+
 class Raven_Bot;
 class Raven_Weapon;
-
-
+class FuzzyModule;
 
 class Raven_WeaponSystem
 {
@@ -80,7 +81,7 @@ public:
   //this method aims the bot's current weapon at the target (if there is a
   //target) and, if aimed correctly, fires a round. (Called each update-step
   //from Raven_Bot::Update)
-  void          TakeAimAndShoot();
+  bool          TryShoot();
 
   //this method determines the most appropriate weapon to use given the current
   //game state. (Called every n update-steps from Raven_Bot::Update)

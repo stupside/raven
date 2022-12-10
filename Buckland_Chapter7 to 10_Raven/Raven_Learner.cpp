@@ -3,6 +3,9 @@
 #include "Raven_WeaponSystem.h"
 #include "Raven_TargetingSystem.h"
 
+#include "Messaging/Telegram.h"
+#include "Raven_Messages.h"
+
 #include "armory/Raven_Weapon.h"
 
 #include <iostream>
@@ -17,55 +20,19 @@
 #define SHOOT 1
 #define DONT_SHOOT 0
 
-Raven_Learner::Datas Raven_Learner::Compute(bool shoot)
+Raven_Learner::Datas Raven_Learner::ComputeShoot(bool HasShooted)
 {
-	auto* Bot = m_pBot;
-	auto* BotTargetingSystem = Bot->GetTargetSys();
+	auto* Bot = this;
 
-#pragma region Data
+	const auto Datas = GetDataSet();
 
-	auto Velocity = Bot->Velocity(); // save
-	auto Speed = Bot->Speed(); // save
+	auto Targets = GetTargetSet();
 
-	auto* BotWeaponSystem = Bot->GetWeaponSys();
-	auto* Weapon = BotWeaponSystem->GetCurrentWeapon();
-
-	auto WeaponType = Weapon->GetType(); // save
-
-#pragma endregion
-
-#pragma region Target
-
-	auto* Target = BotTargetingSystem->GetTarget();
-
-	auto TargetDistance = Vec2DDistance(Bot->Pos(), Target->Pos()); // save
-	auto TargetVisibleTimeSpan = BotTargetingSystem->GetTimeTargetHasBeenVisible(); // save
-	auto TargetIsShootable = BotTargetingSystem->isTargetShootable(); // save
-	auto TargetInFOV = BotTargetingSystem->isTargetWithinFOV(); // save
-	auto TargetHealth = Target->Health(); // save
-
-#pragma endregion
-
-	Raven_Learner::Datas Datas
-	{
-		Speed,
-		(double)WeaponType,
-	};
-
-	Raven_Learner::Datas Targets
-	{
-		TargetDistance,
-		TargetVisibleTimeSpan,
-		(double)TargetIsShootable,
-		(double)TargetInFOV,
-		(double)TargetHealth,
-	};
-
-	Targets.push_back(shoot); // decision
+	Targets.push_back(HasShooted); // decision
 
 	auto* Neural = Raven_Learner::Neural::Instance();
 
-	if (m_pBot->Score() <= MIN_TRAINING_BOT_SCORE) return Raven_Learner::Datas();
+	if (Bot->Score() <= MIN_TRAINING_BOT_SCORE) return Raven_Learner::Datas();
 
 	Neural->AddData(Datas, Targets);
 
@@ -80,6 +47,77 @@ Raven_Learner::Datas Raven_Learner::Compute(bool shoot)
 	auto outputs = CNeuralNetwork->Update(Inputs);
 
 	return outputs;
+}
+
+Raven_Learner::Datas Raven_Learner::GetTargetSet() const
+{
+	auto* Bot = this;
+	auto* BotTargetingSystem = Bot->GetTargetSys();
+
+	auto* Target = BotTargetingSystem->GetTarget();
+
+	auto TargetDistance = Vec2DDistance(Bot->Pos(), Target->Pos()); // save
+	auto TargetVisibleTimeSpan = BotTargetingSystem->GetTimeTargetHasBeenVisible(); // save
+	auto TargetIsShootable = BotTargetingSystem->isTargetShootable(); // save
+	auto TargetInFOV = BotTargetingSystem->isTargetWithinFOV(); // save
+	auto TargetHealth = Target->Health(); // save
+
+	Raven_Learner::Datas Datas
+	{
+		TargetDistance,
+		TargetVisibleTimeSpan,
+		(double)TargetIsShootable,
+		(double)TargetInFOV,
+		(double)TargetHealth,
+	};
+
+	return Datas;
+}
+
+Raven_Learner::Datas Raven_Learner::GetDataSet() const
+{
+	auto* Bot = this;
+	auto* BotTargetingSystem = Bot->GetTargetSys();
+
+	auto Velocity = Bot->Velocity(); // save
+	auto Speed = Bot->Speed(); // save
+
+	auto* BotWeaponSystem = Bot->GetWeaponSys();
+	auto* Weapon = BotWeaponSystem->GetCurrentWeapon();
+
+	auto WeaponType = Weapon->GetType(); // save
+
+	Raven_Learner::Datas Datas
+	{
+		Velocity.LengthSq(),
+		Speed,
+		(double)WeaponType,
+	};
+
+	return Datas;
+}
+
+bool Raven_Learner::MayShoot()
+{
+	auto Shooted = Raven_Bot::MayShoot();
+
+	if (GetTargetSys()->isTargetPresent()) {
+		ComputeShoot(Shooted);
+	}
+
+	return Shooted;
+}
+
+bool Raven_Learner::HandleMessage(const Telegram& msg)
+{
+	auto Handled = Raven_Bot::HandleMessage(msg);
+
+	return Handled;
+}
+
+void Raven_Learner::Update()
+{
+	Raven_Bot::Update();
 }
 
 void Raven_Learner::Neural::Train()

@@ -45,7 +45,6 @@ private:
 	//a pointer to the world data
 	Raven_Game* m_pWorld;
 
-	Raven_Learner* m_Learner;
 	Raven_Team* m_pTeam;
 
 	//this object handles the arbitration and processing of high level goals
@@ -121,13 +120,14 @@ private:
 	//the steering force for this time-step.
 	void          UpdateMovement();
 
+
 	//initializes the bot's VB with its geometry
 	void          SetUpVertexBuffer();
 
 
 public:
 
-	Raven_Bot(Raven_Game* world, Vector2D pos, bool learn = false);
+	Raven_Bot(Raven_Game* world, Vector2D pos);
 
 	inline Raven_Team* GetTeam() const {
 		return m_pTeam;
@@ -138,8 +138,13 @@ public:
 	virtual ~Raven_Bot();
 
 	void         Render();
+
 	void         Update();
-	bool         HandleMessage(const Telegram& msg);
+
+	virtual bool MayShoot();
+
+	virtual bool         HandleMessage(const Telegram& msg);
+
 	void         Write(std::ostream& os)const {/*not implemented*/ }
 	void         Read(std::ifstream& is) {/*not implemented*/ }
 

@@ -11,7 +11,6 @@
 #include "2D/transformations.h"
 
 
-
 //------------------------- ctor ----------------------------------------------
 //-----------------------------------------------------------------------------
 Raven_WeaponSystem::Raven_WeaponSystem(Raven_Bot* owner,
@@ -239,12 +238,12 @@ void Raven_WeaponSystem::ChangeWeapon(unsigned int type)
 	if (w) m_pCurrentWeapon = w;
 }
 
-//--------------------------- TakeAimAndShoot ---------------------------------
+//--------------------------- TryShoot ---------------------------------
 //
 //  this method aims the bots current weapon at the target (if there is a
 //  target) and, if aimed correctly, fires a round
 //-----------------------------------------------------------------------------
-void Raven_WeaponSystem::TakeAimAndShoot()
+bool Raven_WeaponSystem::TryShoot()
 {
 	//aim the weapon only if the current target is shootable or if it has only
 	//very recently gone out of view (this latter condition is to ensure the 
@@ -262,8 +261,6 @@ void Raven_WeaponSystem::TakeAimAndShoot()
 
 		auto visibleTargetDuration = m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible();
 
-		auto derivation = GetCurrentWeapon()->GetRecoil(velocity, distanceToTarget, visibleTargetDuration);
-
 		//if the current weapon is not an instant hit type gun the target position
 		//must be adjusted to take into account the predicted movement of the 
 		//target
@@ -271,40 +268,44 @@ void Raven_WeaponSystem::TakeAimAndShoot()
 			GetCurrentWeapon()->GetType() == type_blaster)
 		{
 			AimingPos = PredictFuturePositionOfTarget();
+			//if the weapon is aimed correctly, there is line of sight between the
+			//bot and the aiming position and it has been in view for a period longer
+			//than the bot's reaction time, shoot the weapon
+			if (m_pOwner->RotateFacingTowardPosition(AimingPos) &&
+				(m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
+					m_dReactionTime) &&
+				m_pOwner->hasLOSto(AimingPos))
+			{
+				AddNoiseToAim(AimingPos);
+				GetCurrentWeapon()->ShootAt(AimingPos);
+				return true;
+			}
+		}
+		//no need to predict movement, aim directly at target
+		else
+		{
+			//if the weapon is aimed correctly and it has been in view for a period
+			//longer than the bot's reaction time, shoot the weapon
+			if (m_pOwner->RotateFacingTowardPosition(AimingPos) &&
+				(m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
+					m_dReactionTime))
+			{
+				AddNoiseToAim(AimingPos);
 
-        GetCurrentWeapon()->ShootAt(AimingPos);
+				GetCurrentWeapon()->ShootAt(AimingPos);
+				return true;
+			}
+		}
+	}
 
-        return true;
-      }
-    }
+	//no target to shoot at so rotate facing to be parallel with the bot's
+	//heading direction
+	else
+	{
+		m_pOwner->RotateFacingTowardPosition(m_pOwner->Pos() + m_pOwner->Heading());
+	}
 
-    //no need to predict movement, aim directly at target
-    else
-    {
-      //if the weapon is aimed correctly and it has been in view for a period
-      //longer than the bot's reaction time, shoot the weapon
-      if ( m_pOwner->RotateFacingTowardPosition(AimingPos) &&
-           (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
-            m_dReactionTime) )
-      {
-        AddNoiseToAim(AimingPos);
-        
-        GetCurrentWeapon()->ShootAt(AimingPos);
-
-        return true;
-      }
-    }
-
-  }
-  
-  //no target to shoot at so rotate facing to be parallel with the bot's
-  //heading direction
-  else
-  {
-    m_pOwner->RotateFacingTowardPosition(m_pOwner->Pos()+ m_pOwner->Heading());
-  }
-
-  return false;
+	return false;
 }
 
 //---------------------------- AddNoiseToAim ----------------------------------

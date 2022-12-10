@@ -25,7 +25,7 @@
 #include "Raven_Learner.h"
 
 //-------------------------- ctor ---------------------------------------------
-Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool learn) :
+Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
 	MovingEntity(pos,
 		script->GetDouble("Bot_Scale"),
 		Vector2D(0, 0),
@@ -82,8 +82,6 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool learn) :
 		script->GetDouble("Bot_AimPersistance"));
 
 	m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
-
-	m_Learner = new Raven_Learner(this);
 }
 
 void Raven_Bot::AssignTeam(Raven_Team* team)
@@ -108,9 +106,6 @@ Raven_Bot::~Raven_Bot()
 	delete m_pVisionUpdateRegulator;
 	delete m_pWeaponSys;
 	delete m_pSensoryMem;
-
-	if (m_Learner)
-		delete m_Learner;
 }
 
 //------------------------------- Spawn ---------------------------------------
@@ -166,15 +161,15 @@ void Raven_Bot::Update()
 			m_pWeaponSys->SelectWeapon();
 		}
 
-		//this method aims the bot's current weapon at the current target
-		//and takes a shot if a shot is possible
-		auto shoot = m_pWeaponSys->TakeAimAndShoot();
-
-		if (m_pTargSys->isTargetPresent()) {
-			if(m_Learner)
-				m_Learner->Compute(shoot);
-		}
+		MayShoot();
 	}
+}
+
+bool Raven_Bot::MayShoot()
+{
+	auto HasShooted = m_pWeaponSys->TryShoot();
+
+	return HasShooted;
 }
 
 
@@ -294,7 +289,7 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 	{
 		Raven_Bot* Target = DereferenceToType<Raven_Bot*>(msg.ExtraInfo);
 
-		m_pTargSys->SetTarget(Target);
+		GetTargetSys()->SetTarget(Target);
 
 		return true;
 	}
