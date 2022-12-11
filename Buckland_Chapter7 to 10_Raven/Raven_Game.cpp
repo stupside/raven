@@ -272,8 +272,8 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 		Bot->GetSteering()->WallAvoidanceOn();
 		Bot->GetSteering()->SeparationOn();
 
-		auto BotIndex = m_Bots.size() + index - 1;
-		auto TeamIndex = BotIndex % (m_lTeams.size() - 1);
+		auto BotIndex = m_Bots.size();
+		auto TeamIndex = m_lTeams.empty() ? 0 : BotIndex % (m_lTeams.size());
 
 		auto TeamIterator = m_lTeams.begin();
 
@@ -286,10 +286,6 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 		m_Bots.push_back(Bot);
 
 		EntityMgr->RegisterEntity(Bot);
-
-#ifdef LOG_CREATIONAL_STUFF
-		debug_con << "Adding bot with ID " << ttos(Bot->ID()) << "";
-#endif
 	}
 }
 
