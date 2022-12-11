@@ -20,7 +20,7 @@ private:
 	std::map<int, Raven_Bot*> m_pMembers;
 
 	inline bool HasMembers() const {
-		return GetMembers().empty();
+		return !GetMembers().empty();
 	}
 
 	inline bool HasMember(const Raven_Bot* bot) const {
