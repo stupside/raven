@@ -72,17 +72,17 @@ void Raven_WeaponSystem::InitializeFuzzyPrecision()
 
 	auto MaxSpeed = m_pOwner->MaxSpeed();
 
-	FzSet& Velocity_Slow = Velocity.AddLeftShoulderSet("Velocity_Slow", 0, MaxSpeed * 2 / 10, MaxSpeed * 4 / 10);
-	FzSet& Velocity_Normal = Velocity.AddTriangularSet("Velocity_Normal", MaxSpeed * 2 / 10, MaxSpeed * 4 / 10, MaxSpeed * 7 / 10);
-	FzSet& Velocity_Fast = Velocity.AddRightShoulderSet("Velocity_Fast", MaxSpeed * 4 / 10, MaxSpeed * 7 / 10, MaxSpeed * 10 / 10);
+	FzSet& Velocity_Slow = Velocity.AddLeftShoulderSet("Velocity_Slow", 0, MaxSpeed * 1 / 3, MaxSpeed * 2 / 3);
+	FzSet& Velocity_Normal = Velocity.AddTriangularSet("Velocity_Normal", MaxSpeed * 1 / 3, MaxSpeed * 2 / 3, MaxSpeed);
+	FzSet& Velocity_Fast = Velocity.AddRightShoulderSet("Velocity_Fast", MaxSpeed * 2 / 3, MaxSpeed, MaxSpeed * 2);
 
 	FuzzyVariable& VisibleTimeSpanTarget = m_FuzzyModule.CreateFLV("Visible_Time_Span_Target");
 
 	auto ReactionTime = m_dReactionTime;
 
-	FzSet& VisibleTimeSpanTarget_Short = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", 0, ReactionTime * 2 / 10, ReactionTime * 4 / 10);
-	FzSet& VisibleTimeSpanTarget_Normal = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", ReactionTime * 2 / 10, ReactionTime * 4 / 10, ReactionTime * 7 / 10);
-	FzSet& VisibleTimeSpanTarget_Long = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", ReactionTime * 4 / 10, ReactionTime * 7 / 10, ReactionTime * 10 / 10);
+	FzSet& VisibleTimeSpanTarget_Short = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", 0, ReactionTime, ReactionTime * 2);
+	FzSet& VisibleTimeSpanTarget_Normal = VisibleTimeSpanTarget.AddTriangularSet("TimeTargetHasBeenVisible_Normal", ReactionTime, ReactionTime * 2, ReactionTime * 5);
+	FzSet& VisibleTimeSpanTarget_Long = VisibleTimeSpanTarget.AddLeftShoulderSet("TimeTargetHasBeenVisible_Long", ReactionTime * 2, ReactionTime * 5, ReactionTime * 100);
 
 	FuzzyVariable& Accuracy = m_FuzzyModule.CreateFLV("Accuracy");
 

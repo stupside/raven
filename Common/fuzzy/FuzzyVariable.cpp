@@ -27,10 +27,9 @@ FuzzyVariable::~FuzzyVariable()
 //  in the variable.
 //-----------------------------------------------------------------------------
 void FuzzyVariable::Fuzzify(double val)
-{    
+{   
   //make sure the value is within the bounds of this variable
-  assert ( (val >= m_dMinRange) && (val <= m_dMaxRange) && 
-           "<FuzzyVariable::Fuzzify>: value out of range");
+  assert ( (val >= m_dMinRange) && (val <= m_dMaxRange) && "<FuzzyVariable::Fuzzify>: value out of range");
 
   //for each set in the flv calculate the DOM for the given value
   MemberSets::const_iterator curSet;
