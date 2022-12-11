@@ -49,7 +49,11 @@ void Raven_TargetingSystem::Update()
 		const auto IsLeader = OwnerTeam->IsLeading(m_pOwner);
 
 		if (IsLeader)
+		{
+			m_pCurrentTarget = Target;
+
 			OwnerTeam->SetTarget(Target);
+		}
 	}
 	else {
 		m_pCurrentTarget = Target;

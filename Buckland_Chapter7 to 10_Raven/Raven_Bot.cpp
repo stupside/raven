@@ -507,7 +507,9 @@ void Raven_Bot::Render()
 
 	if (isDead() || isSpawning()) return;
 
-	gdi->BluePen();
+	auto TeamId = GetTeam()->ID();
+
+	gdi->SetPenColor(TeamId);
 
 	m_vecBotVBTrans = WorldTransform(m_vecBotVB,
 		Pos(),
