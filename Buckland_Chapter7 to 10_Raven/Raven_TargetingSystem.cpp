@@ -35,7 +35,6 @@ void Raven_TargetingSystem::Update()
 	{
 		if (*CurrentBot == m_pOwner) continue;
 
-		//make sure the bot is alive and that it is not the owner
 		if ((*CurrentBot)->isAlive())
 		{
 			double DistToTarget = Vec2DDistanceSq((*CurrentBot)->Pos(), m_pOwner->Pos());
@@ -48,7 +47,6 @@ void Raven_TargetingSystem::Update()
 			}
 		}
 	}
-
 
 	if (Team)
 	{

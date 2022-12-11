@@ -14,24 +14,6 @@
     <Filter Include="AI">
       <UniqueIdentifier>{64293b41-0c31-468f-95f4-6c7b42f3b6c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AI\goals">
-      <UniqueIdentifier>{cba189c7-cf4f-4700-845a-e9a49f46d560}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\goals\composite">
-      <UniqueIdentifier>{220ba402-39ef-45f7-a966-18043685cad0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\goals\goal evaluation">
-      <UniqueIdentifier>{89d69d3f-2c3c-487c-a08b-65218c24ade5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\goals\atomic">
-      <UniqueIdentifier>{cbb82169-9c76-4c52-a854-fac37df3738f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\fuzzy logic">
-      <UniqueIdentifier>{8617fe2c-63df-44b9-94e7-0c6b683b7f6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\fuzzy logic\fuzzy set types">
-      <UniqueIdentifier>{5498c68a-91a1-4c33-a69a-5a74fe4c71a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="AI\Movement &amp; Navigation">
       <UniqueIdentifier>{fa7146e7-4d15-4661-878e-4d5b43c51e5f}</UniqueIdentifier>
     </Filter>
@@ -79,6 +61,24 @@
     </Filter>
     <Filter Include="Game\Entities">
       <UniqueIdentifier>{98088908-5992-4a0f-a889-715c207b7589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Goals">
+      <UniqueIdentifier>{cba189c7-cf4f-4700-845a-e9a49f46d560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Goals\composite">
+      <UniqueIdentifier>{220ba402-39ef-45f7-a966-18043685cad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Goals\goal evaluation">
+      <UniqueIdentifier>{89d69d3f-2c3c-487c-a08b-65218c24ade5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Goals\atomic">
+      <UniqueIdentifier>{cbb82169-9c76-4c52-a854-fac37df3738f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Fuzzy">
+      <UniqueIdentifier>{8617fe2c-63df-44b9-94e7-0c6b683b7f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Fuzzy\fuzzy set types">
+      <UniqueIdentifier>{5498c68a-91a1-4c33-a69a-5a74fe4c71a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -143,85 +143,85 @@
       <Filter>Game\Miscs</Filter>
     </ClCompile>
     <ClCompile Include="goals\Raven_Goal_Types.cpp">
-      <Filter>AI\goals</Filter>
+      <Filter>AI\Goals</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_AdjustRange.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_AttackTarget.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_Explore.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_FollowPath.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_GetItem.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_HuntTarget.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_MoveToPosition.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_NegotiateDoor.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_Think.cpp">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClCompile>
     <ClCompile Include="goals\AttackTargetGoal_Evaluator.cpp">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClCompile>
     <ClCompile Include="goals\ExploreGoal_Evaluator.cpp">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClCompile>
     <ClCompile Include="goals\GetHealthGoal_Evaluator.cpp">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClCompile>
     <ClCompile Include="goals\GetWeaponGoal_Evaluator.cpp">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClCompile>
     <ClCompile Include="goals\Raven_Feature.cpp">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_DodgeSideToSide.cpp">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_SayPhrase.cpp">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_SeekToPosition.cpp">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_TraverseEdge.cpp">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClCompile>
     <ClCompile Include="goals\Goal_Wander.cpp">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzyModule.cpp">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzyOperators.cpp">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzyVariable.cpp">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzySet_LeftShoulder.cpp">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzySet_RightShoulder.cpp">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzySet_Singleton.cpp">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\fuzzy\FuzzySet_Triangle.cpp">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClCompile>
     <ClCompile Include="navigation\Raven_PathPlanner.cpp">
       <Filter>AI\Movement &amp; Navigation</Filter>
@@ -373,112 +373,112 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="goals\Raven_Goal_Types.h">
-      <Filter>AI\goals</Filter>
+      <Filter>AI\Goals</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_AdjustRange.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_AttackTarget.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Goals\Goal_Composite.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_Explore.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_FollowPath.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_GetItem.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_HuntTarget.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_MoveToPosition.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_NegotiateDoor.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_Think.h">
-      <Filter>AI\goals\composite</Filter>
+      <Filter>AI\Goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="goals\AttackTargetGoal_Evaluator.h">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
     <ClInclude Include="goals\ExploreGoal_Evaluator.h">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
     <ClInclude Include="goals\GetHealthGoal_Evaluator.h">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
     <ClInclude Include="goals\GetWeaponGoal_Evaluator.h">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_Evaluator.h">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
     <ClInclude Include="goals\Raven_Feature.h">
-      <Filter>AI\goals\goal evaluation</Filter>
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Goals\Goal.h">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_DodgeSideToSide.h">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_SayPhrase.h">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_SeekToPosition.h">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_TraverseEdge.h">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClInclude>
     <ClInclude Include="goals\Goal_Wander.h">
-      <Filter>AI\goals\atomic</Filter>
+      <Filter>AI\Goals\atomic</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzyHedges.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzyModule.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzyOperators.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzyRule.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzyTerm.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzyVariable.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FzSet.h">
-      <Filter>AI\fuzzy logic</Filter>
+      <Filter>AI\Fuzzy</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzySet.h">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzySet_LeftShoulder.h">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzySet_RightShoulder.h">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzySet_Shoulder.h">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzySet_Singleton.h">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\fuzzy\FuzzySet_Triangle.h">
-      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+      <Filter>AI\Fuzzy\fuzzy set types</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Graph\AStarHeuristicPolicies.h">
       <Filter>AI\Movement &amp; Navigation</Filter>
