@@ -17,20 +17,11 @@ m_pCurrentTarget(0)
 //-----------------------------------------------------------------------------
 void Raven_TargetingSystem::Update()
 {
-	auto* OwnerTeam = m_pOwner->GetTeam();
+	auto* Team = m_pOwner->GetTeam();
 
-	if (OwnerTeam) {
-		const auto IsLeader = OwnerTeam->IsLeading(m_pOwner);
-
-		if (IsLeader)
-		{
-		}
-		else {
-			// Part of a team but not leading. We don't update the target, only the team leader can.
-			return;
-		}
-	}
-
+	// Part of a team but not leading. We don't update the target, only the team leader can.
+	if (Team && !Team->IsLeading(m_pOwner))
+		return;
 
 	double SmallestDistToTarget = MaxDouble;
 
@@ -59,11 +50,9 @@ void Raven_TargetingSystem::Update()
 	}
 
 
-	if (OwnerTeam)
+	if (Team)
 	{
-		if (OwnerTeam->TrySetTeamTarget(Target)) {
-			m_pCurrentTarget = Target;
-		}
+		Team->TrySetTeamTarget(Target);
 	}
 	else {
 		m_pCurrentTarget = Target;

@@ -64,8 +64,6 @@ bool Raven_Team::TrySetTeamTarget(Raven_Bot* target)
 {
 	if (target == nullptr) return false;
 
-	if (IsLeading(target)) return false;
-
 	if (HasMember(target)) 
 		return false;
 
@@ -77,9 +75,6 @@ bool Raven_Team::TrySetTeamTarget(Raven_Bot* target)
 	for (auto Bot : GetMembers()) {
 
 		auto DispatchTo = Bot.first;
-
-		if (IsLeading(Bot.second))
-			continue;
 
 		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, DismatchFrom, DispatchTo, Msg_TeamTarget, DispatchExtraInfos);
 	}
