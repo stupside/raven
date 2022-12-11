@@ -59,7 +59,7 @@ public:
 	void AddMember(Raven_Bot* member);
 	void RemoveMember(Raven_Bot* member);
 
-	void SetTarget(Raven_Bot* target);
+	bool TrySetTeamTarget(Raven_Bot* target);
 
 	bool CanLead(const Raven_Bot* bot) const;
 
