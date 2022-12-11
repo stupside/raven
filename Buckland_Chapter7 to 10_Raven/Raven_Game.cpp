@@ -263,11 +263,11 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //
 //  Adds a bot and switches on the default steering behavior
 //-----------------------------------------------------------------------------
-void Raven_Game::AddBots(unsigned int NumBotsToAdd)
+void Raven_Game::AddBots(unsigned int NumBotsToAdd, bool learner)
 {
 	for (auto index = 0; index <= NumBotsToAdd; index++) {
 
-		Raven_Bot* Bot = new Raven_Bot(this, Vector2D());
+		Raven_Bot* Bot = learner ? new Raven_Learner(this, Vector2D()) : new Raven_Bot(this, Vector2D());
 
 		Bot->GetSteering()->WallAvoidanceOn();
 		Bot->GetSteering()->SeparationOn();

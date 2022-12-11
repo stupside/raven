@@ -24,8 +24,17 @@ private:
 	}
 
 	inline bool HasMember(const Raven_Bot* bot) const {
+
+		if (bot == nullptr) return false;
+
 		if (HasMembers())
-			return GetMembers().at(bot->ID());
+		{
+			auto id = bot->ID();
+
+			auto members = GetMembers();
+
+			return members.count(id);
+		}
 
 		return false;
 	}

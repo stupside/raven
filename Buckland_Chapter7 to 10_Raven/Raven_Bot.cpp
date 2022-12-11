@@ -23,6 +23,7 @@
 #include "Debug/DebugConsole.h"
 
 #include "Raven_Learner.h"
+#include <Game/EntityManager.h>
 
 //-------------------------- ctor ---------------------------------------------
 Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos) :
@@ -287,7 +288,9 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 
 	case Msg_TeamTarget:
 	{
-		Raven_Bot* Target = DereferenceToType<Raven_Bot*>(msg.ExtraInfo);
+		const auto TargetID = DereferenceToType<unsigned int>(msg.ExtraInfo); 
+
+		const auto Target = (Raven_Bot*) EntityMgr->GetEntityFromID(TargetID);
 
 		GetTargetSys()->SetTarget(Target);
 

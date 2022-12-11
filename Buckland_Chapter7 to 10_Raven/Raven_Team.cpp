@@ -62,24 +62,28 @@ void Raven_Team::RemoveMember(Raven_Bot* member)
 
 void Raven_Team::SetTarget(Raven_Bot* target)
 {
-	auto From = GetOwner()->ID();
+	if (target == nullptr) return;
 
 	if (IsLeading(target)) return;
 
 	if (HasMember(target)) return;
 
+	auto TargetID = target->ID();
+
+	auto DismatchFrom = GetOwner()->ID();
+	auto DispatchExtraInfos = (void*)&TargetID;
+
 	for (auto Bot : GetMembers()) {
 
-		auto To = Bot.first;
+		auto DispatchTo = Bot.first;
 
 		if (IsLeading(Bot.second))
 			continue;
 
-		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, From, To, Msg_TeamTarget, target);
+		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, DismatchFrom, DispatchTo, Msg_TeamTarget, DispatchExtraInfos);
 	}
 
-	debug_con << "Target bot " << target->ID() << " for team" << ID() << "";
-
+	debug_con << "Target bot " << TargetID << " for team " << ID() << "";
 }
 
 bool Raven_Team::CanLead(const Raven_Bot* bot) const
@@ -92,6 +96,8 @@ bool Raven_Team::CanLead(const Raven_Bot* bot) const
 
 bool Raven_Team::IsLeading(const Raven_Bot* bot) const
 {
+	if (bot == nullptr) return false;
+
 	if (HasMember(bot))
 		return GetOwner()->ID() == bot->ID();
 
