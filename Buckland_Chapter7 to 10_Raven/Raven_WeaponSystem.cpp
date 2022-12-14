@@ -335,7 +335,7 @@ void Raven_WeaponSystem::AddNoiseToAim(Vector2D& Hit)
 
 	Hit -= CurrentPosition;
 
-	Vec2DRotateAroundOrigin(Hit, Accuracy);
+	Vec2DRotateAroundOrigin(Hit, RandomAccuracy);
 
 	Hit += CurrentPosition;
 }
