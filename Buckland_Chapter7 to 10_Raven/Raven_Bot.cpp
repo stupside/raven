@@ -135,13 +135,46 @@ void Raven_Bot::Update()
 	//Calculate the steering force and update the bot's velocity and position
 	UpdateMovement();
 
-	//if the bot is under AI control but not scripted
+	if (m_pVisionUpdateRegulator->isReady())
+	{
+		m_pSensoryMem->UpdateVision();
+	}
+
+
 	if (isPossessed()) {
+		if (m_pTargetSelectionRegulator->isReady())
+		{
+			auto* Team = GetTeam();
+
+			if (Team) {
+				if (Team->IsLeadingTeam(this)) {
+
+					auto ClosestBot = m_pTargSys->GetClosestBot();
+
+					Team->TrySetTeamTarget(ClosestBot);
+				}
+			}
+		}
 	}
 	else {
 		if (m_pTargetSelectionRegulator->isReady())
 		{
-			m_pTargSys->Update();
+			auto* Team = GetTeam();
+
+			if (Team)
+			{
+				if (Team->IsLeadingTeam(this)) {
+
+					m_pTargSys->Update();
+
+					auto Target = m_pTargSys->GetTarget();
+
+					Team->TrySetTeamTarget(m_pTargSys->GetTarget());
+				}
+			}
+			else {
+				m_pTargSys->Update();
+			}
 		}
 
 		if (m_pGoalArbitrationRegulator->isReady())
@@ -149,14 +182,6 @@ void Raven_Bot::Update()
 			m_pBrain->Arbitrate();
 		}
 
-		//update the sensory memory with any visual stimulus
-		if (m_pVisionUpdateRegulator->isReady())
-		{
-			m_pSensoryMem->UpdateVision();
-		}
-
-		//select the appropriate weapon to use from the weapons currently in
-		//the inventory
 		if (m_pWeaponSelectionRegulator->isReady())
 		{
 			m_pWeaponSys->SelectWeapon();
@@ -288,9 +313,9 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 
 	case Msg_TeamTarget:
 	{
-		const auto TargetID = DereferenceToType<unsigned int>(msg.ExtraInfo); 
+		const auto TargetID = DereferenceToType<unsigned int>(msg.ExtraInfo);
 
-		const auto Target = (Raven_Bot*) EntityMgr->GetEntityFromID(TargetID);
+		const auto Target = (Raven_Bot*)EntityMgr->GetEntityFromID(TargetID);
 
 		GetTargetSys()->SetTarget(Target);
 
@@ -373,9 +398,6 @@ void Raven_Bot::TakePossession()
 	if (!(isSpawning() || isDead()))
 	{
 		m_bPossessed = true;
-
-		if (GetTeam())
-			m_pTeam->SetOwner(this);
 
 		debug_con << "Player Possesses bot " << this->ID() << "";
 	}

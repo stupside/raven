@@ -17,47 +17,8 @@ m_pCurrentTarget(0)
 //-----------------------------------------------------------------------------
 void Raven_TargetingSystem::Update()
 {
-	auto* Team = m_pOwner->GetTeam();
-
-	// Part of a team but not leading. We don't update the target, only the team leader can.
-	if (Team && !Team->IsLeading(m_pOwner))
-		return;
-
-	double SmallestDistToTarget = MaxDouble;
-
-	Raven_Bot* Target = nullptr;
-
-	const std::list<Raven_Bot*> SensedBots = m_pOwner->GetSensoryMem()->GetListOfRecentlySensedOpponents();
-
-	std::list<Raven_Bot*>::const_iterator CurrentBot = SensedBots.begin();
-
-	for (CurrentBot; CurrentBot != SensedBots.end(); ++CurrentBot)
-	{
-		if (*CurrentBot == m_pOwner) continue;
-
-		if ((*CurrentBot)->isAlive())
-		{
-			double DistToTarget = Vec2DDistanceSq((*CurrentBot)->Pos(), m_pOwner->Pos());
-
-			if (DistToTarget < SmallestDistToTarget)
-			{
-				SmallestDistToTarget = DistToTarget;
-
-				Target = *CurrentBot;
-			}
-		}
-	}
-
-	if (Team)
-	{
-		Team->TrySetTeamTarget(Target);
-	}
-	else {
-		m_pCurrentTarget = Target;
-	}
+	m_pCurrentTarget = m_pOwner->GetTargetSys()->GetClosestBot();
 }
-
-
 
 
 bool Raven_TargetingSystem::isTargetWithinFOV()const
@@ -83,4 +44,34 @@ double Raven_TargetingSystem::GetTimeTargetHasBeenVisible()const
 double Raven_TargetingSystem::GetTimeTargetHasBeenOutOfView()const
 {
 	return m_pOwner->GetSensoryMem()->GetTimeOpponentHasBeenOutOfView(m_pCurrentTarget);
+}
+
+Raven_Bot* Raven_TargetingSystem::GetClosestBot() const
+{
+	auto SmallestDistToTarget = MaxDouble;
+
+	Raven_Bot* Bot = nullptr;
+
+	const std::list<Raven_Bot*> SensedBots = m_pOwner->GetSensoryMem()->GetListOfRecentlySensedOpponents();
+
+	std::list<Raven_Bot*>::const_iterator CurrentBot = SensedBots.begin();
+
+	for (CurrentBot; CurrentBot != SensedBots.end(); ++CurrentBot)
+	{
+		if (*CurrentBot == m_pOwner) continue;
+
+		if ((*CurrentBot)->isAlive())
+		{
+			double DistToTarget = Vec2DDistanceSq((*CurrentBot)->Pos(), m_pOwner->Pos());
+
+			if (DistToTarget < SmallestDistToTarget)
+			{
+				SmallestDistToTarget = DistToTarget;
+
+				Bot = *CurrentBot;
+			}
+		}
+	}
+
+	return Bot;
 }

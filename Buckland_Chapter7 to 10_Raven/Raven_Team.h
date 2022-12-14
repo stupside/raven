@@ -15,21 +15,19 @@ private:
 
 	unsigned int m_ID;
 
-	const Raven_Bot* m_pOwner;
-
 	std::map<int, Raven_Bot*> m_pMembers;
 
 	inline bool HasMembers() const {
 		return !GetMembers().empty();
 	}
 
-	inline bool HasMember(const Raven_Bot* bot) const {
+	inline bool HasMember(const Raven_Bot* Bot) const {
 
-		if (bot == nullptr) return false;
+		if (Bot == nullptr) return false;
 
 		if (HasMembers())
 		{
-			auto id = bot->ID();
+			auto id = Bot->ID();
 
 			auto members = GetMembers();
 
@@ -41,28 +39,26 @@ private:
 
 public:
 
-	explicit Raven_Team(unsigned int id) : m_ID(id), m_pMembers(std::map<int, Raven_Bot*>()), m_pOwner(nullptr) {
+	explicit Raven_Team(unsigned int Id) : m_ID(Id), m_pMembers(std::map<int, Raven_Bot*>()) {
 	}
 
 	inline unsigned int ID() const {
 		return m_ID;
 	}
 
-	void SetOwner(Raven_Bot* owner);
-
-	const Raven_Bot* GetOwner() const;
+	const Raven_Bot* GetLeader() const;
 
 	inline const std::map<int, Raven_Bot*> GetMembers() const {
 		return m_pMembers;
 	}
 
-	void AddMember(Raven_Bot* member);
-	void RemoveMember(Raven_Bot* member);
+	void AddMember(Raven_Bot* Member);
+	void RemoveMember(Raven_Bot* Member);
 
-	bool TrySetTeamTarget(Raven_Bot* target);
+	bool TrySetTeamTarget(Raven_Bot* Target);
 
-	bool CanLead(const Raven_Bot* bot) const;
+	bool CanLead(const Raven_Bot* Bot) const;
 
-	bool IsLeading(const Raven_Bot* bot) const;
+	bool IsLeadingTeam(const Raven_Bot* Bot) const;
 };
 

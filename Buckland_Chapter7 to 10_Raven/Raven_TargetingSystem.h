@@ -69,6 +69,8 @@ public:
 
   //sets the target pointer to null
   inline void       ClearTarget(){m_pCurrentTarget=0;}
+
+  Raven_Bot* GetClosestBot() const;
 };
 
 

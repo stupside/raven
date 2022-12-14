@@ -1,80 +1,63 @@
 #include "Raven_Team.h"
 #include <Debug/DebugConsole.h>
 
-const Raven_Bot* Raven_Team::GetOwner() const
+const Raven_Bot* Raven_Team::GetLeader() const
 {
-	if (CanLead(m_pOwner))
-		return m_pOwner;
+	Raven_Bot* Leader = nullptr;
 
-	Raven_Bot* owner = nullptr;
+	for (auto Member : GetMembers()) {
 
-	for (auto bot : GetMembers()) {
+		if (CanLead(Member.second)) {
 
-		if (CanLead(bot.second)) {
-
-			if (bot.second->isPossessed()) {
-				return bot.second;
+			if (Member.second->isPossessed()) {
+				return Member.second;
 			}
-			else if (owner == nullptr)
+			else if (Leader == nullptr)
 			{
-				owner = bot.second;
+				Leader = Member.second;
 			}
 		}
 	}
 
-	return owner;
-}
-
-void Raven_Team::SetOwner(Raven_Bot* owner) {
-	m_pOwner = owner;
-
-	debug_con << "Set " << owner->ID() << " Owner of team" << ID() << "";
-
-	if (owner)
-	{
-		if (HasMember(owner)) return;
-
-		AddMember(owner);
-	}
+	return Leader;
 }
 
 
-void Raven_Team::AddMember(Raven_Bot* member)
+void Raven_Team::AddMember(Raven_Bot* Member)
 {
-	member->AssignTeam(this);
+	Member->AssignTeam(this);
 
-	m_pMembers.insert_or_assign(member->ID(), member);
+	m_pMembers.insert_or_assign(Member->ID(), Member);
 
-	debug_con << "Added bot " << member->ID() << " to team" << ID() << "";
+	debug_con << "Added bot " << Member->ID() << " to team" << ID() << "";
 }
 
-void Raven_Team::RemoveMember(Raven_Bot* member)
+void Raven_Team::RemoveMember(Raven_Bot* Member)
 {
-	member->AssignTeam(nullptr);
+	Member->AssignTeam(nullptr);
 
-	if (IsLeading(member))
-		SetOwner(nullptr);
+	m_pMembers.erase(Member->ID());
 
-	m_pMembers.erase(member->ID());
-
-	debug_con << "Removed bot " << member->ID() << " from team" << ID() << "";
+	debug_con << "Removed bot " << Member->ID() << " from team" << ID() << "";
 }
 
-bool Raven_Team::TrySetTeamTarget(Raven_Bot* target)
+bool Raven_Team::TrySetTeamTarget(Raven_Bot* Target)
 {
-	if (target == nullptr) return false;
+	if (Target == nullptr) return false;
 
-	if (HasMember(target)) 
+	if (HasMember(Target))
 		return false;
 
-	auto TargetID = target->ID();
+	auto TargetID = Target->ID();
 
-	auto DismatchFrom = GetOwner()->ID();
+	auto DismatchFrom = GetLeader()->ID();
 	auto DispatchExtraInfos = (void*)&TargetID;
 
 	for (auto Bot : GetMembers()) {
 
 		auto DispatchTo = Bot.first;
+
+		if (IsLeadingTeam(Bot.second)) continue;
 
 		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, DismatchFrom, DispatchTo, Msg_TeamTarget, DispatchExtraInfos);
 	}
@@ -82,17 +65,17 @@ bool Raven_Team::TrySetTeamTarget(Raven_Bot* target)
 	debug_con << "Set target " << TargetID << " for team " << ID() << "";
 }
 
-bool Raven_Team::CanLead(const Raven_Bot* bot) const
+bool Raven_Team::CanLead(const Raven_Bot* Bot) const
 {
-	if (bot)
-		return bot->isAlive() && !bot->isSpawning();
+	if (Bot)
+		return Bot->isAlive() && !Bot->isSpawning();
 
 	return false;
 }
 
-bool Raven_Team::IsLeading(const Raven_Bot* bot) const
+bool Raven_Team::IsLeadingTeam(const Raven_Bot* Bot) const
 {
-	if (bot == nullptr) return false;
+	if (Bot == nullptr) return false;
 
-	return GetOwner()->ID() == bot->ID();
+	return GetLeader()->ID() == Bot->ID();
 }
