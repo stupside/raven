@@ -72,9 +72,9 @@ void Raven_WeaponSystem::InitializeFuzzyPrecision()
 
 	auto MaxSpeed = m_pOwner->MaxSpeed();
 
-	FzSet& Velocity_Slow = Velocity.AddLeftShoulderSet("Velocity_Slow", 0, MaxSpeed * 1 / 3, MaxSpeed * 2 / 3);
-	FzSet& Velocity_Normal = Velocity.AddTriangularSet("Velocity_Normal", MaxSpeed * 1 / 3, MaxSpeed * 2 / 3, MaxSpeed);
-	FzSet& Velocity_Fast = Velocity.AddRightShoulderSet("Velocity_Fast", MaxSpeed * 2 / 3, MaxSpeed, MaxSpeed * 2);
+	FzSet& Velocity_Slow = Velocity.AddLeftShoulderSet("Velocity_Slow", 0, MaxSpeed * 1 / 4, MaxSpeed * 2 / 4);
+	FzSet& Velocity_Normal = Velocity.AddTriangularSet("Velocity_Normal", MaxSpeed * 1 / 4, MaxSpeed * 2 / 4, MaxSpeed * 3/4);
+	FzSet& Velocity_Fast = Velocity.AddRightShoulderSet("Velocity_Fast", MaxSpeed * 2 / 4, MaxSpeed * 3/4, MaxSpeed);
 
 	FuzzyVariable& VisibleTimeSpanTarget = m_FuzzyModule.CreateFLV("Visible_Time_Span_Target");
 
@@ -94,18 +94,18 @@ void Raven_WeaponSystem::InitializeFuzzyPrecision()
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyUnaccurate);
 
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyUnaccurate);
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyAccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyAccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyUnaccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Fast, DistanceToTarget_Medium)), AccuracyUnaccurate);
 
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyAccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyUnaccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Normal, DistanceToTarget_Far)), AccuracyUnaccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Short, FzAND(Velocity_Fast, DistanceToTarget_Far)), AccuracyUnaccurate);
 
 
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Slow, DistanceToTarget_Close)), AccuracyPerfectAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyAccurate);
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyUnaccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyAccurate);
 
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Normal, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyAccurate);
@@ -117,14 +117,14 @@ void Raven_WeaponSystem::InitializeFuzzyPrecision()
 
 
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Close)), AccuracyPerfectAccurate);
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyAccurate);
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyUnaccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Close)), AccuracyPerfectAccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Close)), AccuracyAccurate);
 
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Medium)), AccuracyPerfectAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Medium)), AccuracyAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Medium)), AccuracyAccurate);
 
-	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyPerfectAccurate);
+	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Slow, DistanceToTarget_Far)), AccuracyAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Normal, DistanceToTarget_Far)), AccuracyAccurate);
 	m_FuzzyModule.AddRule(FzAND(VisibleTimeSpanTarget_Long, FzAND(Velocity_Fast, DistanceToTarget_Far)), AccuracyUnaccurate);
 }
