@@ -417,7 +417,7 @@ bool Raven_Game::LoadMap(const std::string& filename)
 	{
 		AddTeams(script->GetInt("NumTeams"));
 
-		AddBots(script->GetInt("NumBots"), false);
+		AddBots(script->GetInt("NumBots"), true);
 
 		return true;
 	}

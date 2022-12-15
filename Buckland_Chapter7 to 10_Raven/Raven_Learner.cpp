@@ -7,6 +7,7 @@
 #include "Raven_Messages.h"
 
 #include "armory/Raven_Weapon.h"
+#include "Raven_SensoryMemory.h"
 
 #include <iostream>
 #include <fstream>
@@ -17,52 +18,20 @@
 
 #define GET_VARIABLE_NAME(variable) (#variable)
 #define MAX_TRAINING_CDATA_SIZE 200
-#define MIN_TRAINING_BOT_SCORE 1
+#define MIN_TRAINING_BOT_SCORE 0
 
-Raven_Learner::Datas Raven_Learner::ComputeShoot(bool HasShooted)
+
+Raven_Learner::Datas Raven_Learner::GetTargetSet(Raven_Bot* Target) const
 {
+	auto BotTargetingSystem = GetTargetSys();
 
-	debug_con << "Computing shoot datas for bot " << ID();
+	auto TargetDistance = Target ? Vec2DDistance(Pos(), Target->Pos()) : 0; // save
 
-	auto* Bot = this;
+	auto TargetVisibleTimeSpan = Target ? GetSensoryMem()->GetTimeOpponentHasBeenVisible(Target) : 0; // save
 
-	const auto Datas = GetDataSet();
-
-	auto Targets = GetTargetSet();
-
-	Targets.push_back(HasShooted); // decision
-
-	auto* Neural = Raven_Learner::Neural::Instance();
-
-	if (Bot->Score() <= MIN_TRAINING_BOT_SCORE) return Raven_Learner::Datas();
-
-	Neural->AddData(Datas, Targets);
-
-	auto* CNeuralNetwork = Neural->GetCNeuralNet();
-
-	auto InputsReserver = Datas.size() + Targets.size();
-
-	Raven_Learner::Datas Inputs(InputsReserver);
-
-	Inputs.insert(Datas.end(), Targets.begin(), Targets.end());
-
-	auto outputs = CNeuralNetwork->Update(Inputs);
-
-	return outputs;
-}
-
-Raven_Learner::Datas Raven_Learner::GetTargetSet() const
-{
-	auto* Bot = this;
-	auto* BotTargetingSystem = Bot->GetTargetSys();
-
-	auto* Target = BotTargetingSystem->GetTarget();
-
-	auto TargetDistance = Vec2DDistance(Bot->Pos(), Target->Pos()); // save
-	auto TargetVisibleTimeSpan = BotTargetingSystem->GetTimeTargetHasBeenVisible(); // save
 	auto TargetIsShootable = BotTargetingSystem->isTargetShootable(); // save
 	auto TargetInFOV = BotTargetingSystem->isTargetWithinFOV(); // save
-	auto TargetHealth = Target->Health(); // save
+	auto TargetHealth = Target ? Target->Health() : 0; // save
 
 	Raven_Learner::Datas Datas
 	{
@@ -76,38 +45,34 @@ Raven_Learner::Datas Raven_Learner::GetTargetSet() const
 	return Datas;
 }
 
-Raven_Learner::Datas Raven_Learner::GetDataSet() const
+void Raven_Learner::OnShootHit(Raven_ShootHitContext Hit, Raven_Bot* Target)
 {
-	auto* Bot = this;
-	auto* BotTargetingSystem = Bot->GetTargetSys();
+	const auto* Bot = this;
 
-	auto Velocity = Bot->Velocity(); // save
-	auto Speed = Bot->Speed(); // save
-
-	auto* BotWeaponSystem = Bot->GetWeaponSys();
-	auto* Weapon = BotWeaponSystem->GetCurrentWeapon();
-
-	auto WeaponType = Weapon->GetType(); // save
+	if (Bot->Score() <= MIN_TRAINING_BOT_SCORE) return;
 
 	Raven_Learner::Datas Datas
 	{
-		Velocity.LengthSq(),
-		Speed,
-		(double)WeaponType,
+		Hit.Speed,
+		(double)Hit.WeaponType,
 	};
 
-	return Datas;
-}
+	auto Targets = GetTargetSet(Target);
 
-bool Raven_Learner::MayShoot()
-{
-	auto Shooted = Raven_Bot::MayShoot();
+	Targets.push_back(Hit.Hit); // decision
 
-	if (GetTargetSys()->isTargetPresent()) {
-		ComputeShoot(Shooted);
-	}
+	auto* Neural = Raven_Learner::Neural::Instance();
 
-	return Shooted;
+	Neural->AddData(Datas, Targets);
+
+	auto* CNeuralNetwork = Neural->GetCNeuralNet();
+
+	Raven_Learner::Datas Inputs;
+
+	Inputs.insert(Inputs.end(), Datas.begin(), Datas.end());
+	Inputs.insert(Inputs.end(), Targets.begin(), Targets.end());
+
+	auto outputs = CNeuralNetwork->Update(Inputs);
 }
 
 bool Raven_Learner::HandleMessage(const Telegram& msg)
@@ -137,8 +102,6 @@ void Raven_Learner::Neural::Train()
 bool Raven_Learner::Neural::TryStartTrainThread()
 {
 	if (m_bTraining) {
-		debug_con << "Starting train thread already running" << "";
-
 		return false;
 	}
 

@@ -16,6 +16,7 @@ enum message_type
   Msg_PathReady,
   Msg_NoPathAvailable,
   Msg_TakeThatMF, 
+  Msg_ShootHit,
   Msg_YouGotMeYouSOB,
   Msg_GoalQueueEmpty,
   Msg_OpenSesame,
@@ -64,6 +65,10 @@ inline std::string MessageToString(int msg)
   case Msg_TeamTarget:
 
       return "Msg_TeamTarget";
+
+  case Msg_ShootHit:
+
+      return "Msg_ShootMissed";
 
   default:
 

@@ -17,6 +17,7 @@
 #include "misc/utils.h"
 
 #include "Raven_TargetingSystem.h"
+#include "Raven_ShootHitContext.h"
 
 class Raven_Team;
 class Raven_Learner;
@@ -141,7 +142,9 @@ public:
 
 	void         Update();
 
-	virtual bool MayShoot();
+	inline virtual void OnShootHit(Raven_ShootHitContext Hit, Raven_Bot* Bot) {
+		return;
+	}
 
 	virtual bool         HandleMessage(const Telegram& msg);
 

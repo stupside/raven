@@ -292,6 +292,9 @@
     <ClCompile Include="Trigger_TeamWeaponGiver.cpp">
       <Filter>AI\Triggers</Filter>
     </ClCompile>
+    <ClCompile Include="Raven_ShootHitContext.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -651,6 +654,7 @@
     <ClInclude Include="Trigger_TeamWeaponGiver.h">
       <Filter>AI\Triggers</Filter>
     </ClInclude>
+    <ClInclude Include="Raven_ShootHitContext.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

@@ -315,6 +315,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='boundschecker|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Raven_ShootHitContext.cpp" />
     <ClCompile Include="Raven_Team.cpp" />
     <ClCompile Include="Raven_UserOptions.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -571,6 +572,7 @@
     <ClInclude Include="GraveMarkers.h" />
     <ClInclude Include="Raven_Door.h" />
     <ClInclude Include="Raven_ObjectEnumerations.h" />
+    <ClInclude Include="Raven_ShootHitContext.h" />
     <ClInclude Include="Raven_Team.h" />
     <ClInclude Include="Raven_UserOptions.h" />
     <ClInclude Include="resource.h" />

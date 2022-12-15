@@ -13,6 +13,8 @@
 #include "Raven_WeaponSystem.h"
 #include "Raven_SensoryMemory.h"
 #include "Raven_Map.h"
+#include "armory/Raven_Projectile.h"
+#include "armory/Raven_Weapon.h"
 
 #include "Messaging/Telegram.h"
 #include "Raven_Messages.h"
@@ -180,18 +182,9 @@ void Raven_Bot::Update()
 			m_pWeaponSys->SelectWeapon();
 		}
 
-		MayShoot();
+		m_pWeaponSys->TryShoot();
 	}
 }
-
-bool Raven_Bot::MayShoot()
-{
-	auto HasShooted = m_pWeaponSys->TryShoot();
-
-	return HasShooted;
-}
-
-
 
 //------------------------- UpdateMovement ------------------------------------
 //
@@ -252,10 +245,32 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 	//handle any messages not handles by the goals
 	switch (msg.Msg)
 	{
+	case Msg_ShootHit:
+	{
+		auto Context = DereferenceToType<Raven_ShootHitContext>(msg.ExtraInfo);
+
+		Raven_Bot* Bot = nullptr;
+
+		if (Context.Hit) {
+			Bot = (Raven_Bot*)EntityMgr->GetEntityFromID(msg.Sender);
+		}
+
+		OnShootHit(Context, Bot);
+
+		return true;
+	}
 	case Msg_TakeThatMF:
 
+	{
 		//just return if already dead or spawning
 		if (isDead() || isSpawning()) return true;
+
+		const auto* Attacker = (Raven_Bot*)EntityMgr->GetEntityFromID(msg.Sender);
+
+		// TODO: Get speed and weapon type on fire !
+		Raven_ShootHitContext Context(true, Attacker->Speed(), Attacker->GetWeaponSys()->GetCurrentWeapon()->GetType());
+
+		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, ID(), Attacker->ID(), Msg_ShootHit, (void*)&Context);
 
 		//the extra info field of the telegram carries the amount of damage
 		ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
@@ -271,6 +286,7 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 		}
 
 		return true;
+	}
 
 	case Msg_YouGotMeYouSOB:
 

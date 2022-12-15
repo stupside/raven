@@ -18,7 +18,7 @@ public:
 		CData* m_pCData;
 		CNeuralNet* m_pCNeuralNetwork;
 
-		Neural() : m_pCData(nullptr), m_pCNeuralNetwork(nullptr) {}
+		explicit Neural() : m_pCData(nullptr), m_pCNeuralNetwork(nullptr) {}
 
 		void Train();
 		bool TryStartTrainThread();
@@ -37,17 +37,14 @@ public:
 	};
 private:
 
-	Datas ComputeShoot(bool shoot);
-
-	Datas GetTargetSet() const;
-	Datas GetDataSet() const;
+	Datas GetTargetSet(Raven_Bot* Target) const;
 
 public:
 
 	Raven_Learner(Raven_Game* world, Vector2D pos) : Raven_Bot(world, pos) {
 	}
 
-	bool MayShoot() override;
+	void OnShootHit(Raven_ShootHitContext Hit, Raven_Bot* Bot) override;
 
 	bool HandleMessage(const Telegram& msg) override;
 
