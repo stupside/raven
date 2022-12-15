@@ -16,7 +16,7 @@ Trigger_TeamWeaponGiver::Trigger_TeamWeaponGiver(const int WeaponType, int radiu
 
 void Trigger_TeamWeaponGiver::Try(Raven_Bot* Bot)
 {
-    const auto* Team = Bot->GetTeam();
+    const auto* Team = m_pTeam;
 
     if (Team) {
         const bool IsMember = Team->HasMember(Bot);

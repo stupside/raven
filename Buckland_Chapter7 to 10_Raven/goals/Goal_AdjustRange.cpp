@@ -5,15 +5,15 @@
 
 
 
-Goal_AdjustRange::Goal_AdjustRange(Raven_Bot* pBot):Goal<Raven_Bot>(pBot, goal_adjust_range),
-                                                    m_dIdealRange(0)
+Goal_AdjustRange::Goal_AdjustRange(Raven_Bot* pBot) :Goal<Raven_Bot>(pBot, goal_adjust_range),
+m_dIdealRange(0)
 {}
 
 //---------------------------- Initialize -------------------------------------
 //-----------------------------------------------------------------------------  
 void Goal_AdjustRange::Activate()
 {
-  m_pOwner->GetSteering()->SetTarget(m_pOwner->GetTargetBot()->Pos());
+	m_pOwner->GetSteering()->SetTarget(m_pOwner->GetTargetBot()->Pos());
 
 
 }
@@ -22,16 +22,16 @@ void Goal_AdjustRange::Activate()
 //-----------------------------------------------------------------------------
 int Goal_AdjustRange::Process()
 {
-  //if status is inactive, call Activate()
-  ActivateIfInactive();
+	//if status is inactive, call Activate()
+	ActivateIfInactive();
 
-  /*
-  if (m_pOwner->GetCurrentWeapon()->isInIdealWeaponRange())
-  {
-    m_iStatus = completed;
-  }
-*/
-  return m_iStatus;
+	/*
+	if (m_pOwner->GetCurrentWeapon()->isInIdealWeaponRange())
+	{
+	  m_iStatus = completed;
+	}
+  */
+	return m_iStatus;
 }
 
 //---------------------------- Terminate --------------------------------------

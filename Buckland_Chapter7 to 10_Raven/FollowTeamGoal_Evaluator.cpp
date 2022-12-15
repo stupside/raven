@@ -3,30 +3,37 @@
 #include "goals/Goal_Think.h"
 #include "goals/Raven_Feature.h"
 #include "Raven_Team.h"
+#include "Raven_Game.h"
 
 double FollowTeamGoal_Evaluator::CalculateDesirability(Raven_Bot* pBot)
 {
-    double Desirability = 0.0;
+	double Desirability = 0.0;
 
-    auto Team = pBot->GetTeam();
+	auto Team = pBot->GetTeam();
 
-    //only do the calculation if there is a target present
-    if (Team)
-    {
-        const double Tweaker = 1.5;
+	if (Team)
+	{
+		const double Tweaker = 1.5;
 
-        auto Leader = Team->GetLeader();
+		if (Team->IsLeadingTeam(pBot)) return 0;
 
-        if (Leader == pBot) return 0;
+		auto Leader = Team->GetLeader();
 
-        Desirability = Tweaker * (1 - Raven_Feature::Health(Leader));
-        
-        Clamp(Desirability, 0, 1);
+		auto DistanceToLeader = pBot->Pos() - Leader->Pos();
 
-        Desirability *= m_dCharacterBias;
-    }
+		auto MapSizeX = pBot->GetWorld()->GetMap()->GetSizeX();
+		auto MapSizeY = pBot->GetWorld()->GetMap()->GetSizeY();
 
-    return Desirability;
+		auto DistanceTweaker = (DistanceToLeader.x + DistanceToLeader.y) / (MapSizeX + MapSizeY);
+
+		Desirability = Tweaker * (1 - Raven_Feature::Health(Leader)) * DistanceTweaker;
+
+		Clamp(Desirability, 0, 1);
+
+		Desirability *= m_dCharacterBias;
+	}
+
+	return Desirability;
 }
 
 void FollowTeamGoal_Evaluator::SetGoal(Raven_Bot* pEnt)
