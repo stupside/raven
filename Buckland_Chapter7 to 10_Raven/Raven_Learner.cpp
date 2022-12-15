@@ -13,6 +13,7 @@
 
 #include <thread>
 #include <Debug/DebugConsole.h>
+#include <misc/Cgdi.h>
 
 #define GET_VARIABLE_NAME(variable) (#variable)
 #define MAX_TRAINING_CDATA_SIZE 200
@@ -119,6 +120,13 @@ bool Raven_Learner::HandleMessage(const Telegram& msg)
 void Raven_Learner::Update()
 {
 	Raven_Bot::Update();
+}
+
+void Raven_Learner::Render()
+{
+	Raven_Bot::Render();
+
+	gdi->TextAtPos(Pos().x - 40, Pos().y + 15, "Learner");
 }
 
 void Raven_Learner::Neural::Train()

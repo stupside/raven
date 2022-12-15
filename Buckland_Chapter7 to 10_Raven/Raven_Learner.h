@@ -52,6 +52,8 @@ public:
 	bool HandleMessage(const Telegram& msg) override;
 
 	void Update() override;
+
+	void Render() override;
 };
 
 
