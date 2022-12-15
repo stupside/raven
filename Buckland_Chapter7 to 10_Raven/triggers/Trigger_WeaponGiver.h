@@ -37,6 +37,8 @@ public:
   //draws a symbol representing the weapon type at the trigger's location
   void Render();
 
+  void RenderWeapon(int type);
+
   void Read (std::ifstream& is);
 };
 

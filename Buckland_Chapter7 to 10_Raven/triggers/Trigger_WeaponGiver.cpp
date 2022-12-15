@@ -100,48 +100,54 @@ void Trigger_WeaponGiver::Render()
 {
   if (isActive())
   {
-    switch (EntityType())
+      RenderWeapon(EntityType());
+  }
+}
+
+void Trigger_WeaponGiver::RenderWeapon(int type)
+{
+    switch (type)
     {
-      case type_rail_gun:
-        {
-          gdi->BluePen();
-          gdi->BlueBrush();
-          gdi->Circle(Pos(), 3);
-          gdi->ThickBluePen();
-          gdi->Line(Pos(), Vector2D(Pos().x, Pos().y-9));
-        }
+    case type_rail_gun:
+    {
+        gdi->BluePen();
+        gdi->BlueBrush();
+        gdi->Circle(Pos(), 3);
+        gdi->ThickBluePen();
+        gdi->Line(Pos(), Vector2D(Pos().x, Pos().y - 9));
+    }
 
-        break;
+    break;
 
-      case type_shotgun:
-        {
+    case type_shotgun:
+    {
 
-          gdi->BlackBrush();
-          gdi->BrownPen();
-          const double sz = 3.0;
-          gdi->Circle(Pos().x-sz,Pos().y, sz);
-          gdi->Circle(Pos().x+sz,Pos().y, sz);
-        }
+        gdi->BlackBrush();
+        gdi->BrownPen();
+        const double sz = 3.0;
+        gdi->Circle(Pos().x - sz, Pos().y, sz);
+        gdi->Circle(Pos().x + sz, Pos().y, sz);
+    }
 
-        break;
+    break;
 
-      case type_rocket_launcher:
-        {
+    case type_rocket_launcher:
+    {
 
-           Vector2D facing(-1,0);
+        Vector2D facing(-1, 0);
 
-           m_vecRLVBTrans = WorldTransform(m_vecRLVB,
-                                          Pos(),
-                                          facing,
-                                          facing.Perp(),
-                                          Vector2D(2.5,2.5));
+        m_vecRLVBTrans = WorldTransform(m_vecRLVB,
+            Pos(),
+            facing,
+            facing.Perp(),
+            Vector2D(2.5, 2.5));
 
-            gdi->RedPen();
-            gdi->ClosedShape(m_vecRLVBTrans);
-        }
-      
-        break;
+        gdi->RedPen();
+        gdi->ClosedShape(m_vecRLVBTrans);
+    }
+
+    break;
 
     }//end switch
-  }
+
 }

@@ -13,15 +13,17 @@ double FollowTeamGoal_Evaluator::CalculateDesirability(Raven_Bot* pBot)
     //only do the calculation if there is a target present
     if (Team)
     {
-        const double Tweaker = 1.0;
+        const double Tweaker = 1.5;
 
         auto Leader = Team->GetLeader();
 
+        if (Leader == pBot) return 0;
+
         Desirability = Tweaker * (1 - Raven_Feature::Health(Leader));
         
-        Desirability *= m_dCharacterBias;
-
         Clamp(Desirability, 0, 1);
+
+        Desirability *= m_dCharacterBias;
     }
 
     return Desirability;

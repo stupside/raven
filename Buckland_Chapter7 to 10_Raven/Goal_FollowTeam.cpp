@@ -2,11 +2,14 @@
 #include "Raven_Team.h"
 #include "Raven_SteeringBehaviors.h"
 
+#include "Goals/Goal_Explore.h"
+#include "Goals/Goal_MoveToPosition.h"
+
 #include <Time/CrudeTimer.h>
 #include "Goals/Raven_Goal_Types.h"
 #include "Raven_Bot.h"
 
-Goal_FollowTeam::Goal_FollowTeam(Raven_Bot* pE) : Goal<Raven_Bot>(pE, goal_follow_team) {
+Goal_FollowTeam::Goal_FollowTeam(Raven_Bot* pE) : Goal_Composite<Raven_Bot>(pE, goal_follow_team) {
 }
 
 void Goal_FollowTeam::Activate()
@@ -18,11 +21,17 @@ void Goal_FollowTeam::Activate()
 
 	if (Team) {
 		if (Team->IsLeadingTeam(Bot)) {
-			m_iStatus = failed;
+			m_iStatus = completed;
 		}
 		else {
-			Bot->GetSteering()->OffsetPursuitOn(Team->GetLeader(), Vector2D(20, 20));
+
+			m_target = Team->GetLeader()->Pos();
+
+			AddSubgoal(new Goal_MoveToPosition(m_pOwner, m_target));
 		}
+	}
+	else {
+		m_iStatus = completed;
 	}
 }
 
@@ -30,19 +39,12 @@ int Goal_FollowTeam::Process()
 {
 	ActivateIfInactive();
 
-	auto* Bot = m_pOwner;
-	auto* Team = Bot->GetTeam();
-
-	if (Team) {
-
-		if (Team->IsLeadingTeam(Bot)) {
-		}
-		else {
-			m_iStatus = completed;
-		}
+	if (m_pOwner->isAtPosition(m_target))
+	{
+		m_iStatus = completed;
 	}
 	else {
-		m_iStatus = completed;
+		m_iStatus = ProcessSubgoals();
 	}
 
 	return m_iStatus;
@@ -50,13 +52,9 @@ int Goal_FollowTeam::Process()
 
 void Goal_FollowTeam::Terminate()
 {
-	auto* Bot = m_pOwner;
-
-	Bot->GetSteering()->OffsetPursuitOff();
-
-	m_iStatus = completed;
 }
 
 void Goal_FollowTeam::Render()
 {
+	Goal_Composite<Raven_Bot>::Render();
 }
