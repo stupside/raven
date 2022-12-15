@@ -217,6 +217,8 @@
   <ItemGroup>
     <ClCompile Include="CData.cpp" />
     <ClCompile Include="CNeuralNet.cpp" />
+    <ClCompile Include="FollowTeamGoal_Evaluator.cpp" />
+    <ClCompile Include="Goal_FollowTeam.cpp" />
     <ClCompile Include="main.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -538,6 +540,8 @@
   <ItemGroup>
     <ClInclude Include="CData.h" />
     <ClInclude Include="CNeuralNet.h" />
+    <ClInclude Include="FollowTeamGoal_Evaluator.h" />
+    <ClInclude Include="Goal_FollowTeam.h" />
     <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Game.h" />
     <ClInclude Include="Raven_Learner.h" />

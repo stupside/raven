@@ -283,6 +283,12 @@
     <ClCompile Include="CData.cpp">
       <Filter>AI\network</Filter>
     </ClCompile>
+    <ClCompile Include="Goal_FollowTeam.cpp">
+      <Filter>AI\Goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowTeamGoal_Evaluator.cpp">
+      <Filter>AI\Goals\goal evaluation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -632,6 +638,12 @@
     </ClInclude>
     <ClInclude Include="CNeuralNet.h">
       <Filter>AI\network</Filter>
+    </ClInclude>
+    <ClInclude Include="Goal_FollowTeam.h">
+      <Filter>AI\Goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowTeamGoal_Evaluator.h">
+      <Filter>AI\Goals\goal evaluation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

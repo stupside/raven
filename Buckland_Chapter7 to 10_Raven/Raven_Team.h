@@ -46,7 +46,7 @@ public:
 		return m_ID;
 	}
 
-	const Raven_Bot* GetLeader() const;
+	Raven_Bot* GetLeader() const;
 
 	inline const std::map<int, Raven_Bot*> GetMembers() const {
 		return m_pMembers;

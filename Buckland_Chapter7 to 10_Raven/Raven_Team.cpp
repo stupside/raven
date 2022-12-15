@@ -1,7 +1,8 @@
 #include "Raven_Team.h"
+#include "Goals/Goal_Think.h"
 #include <Debug/DebugConsole.h>
 
-const Raven_Bot* Raven_Team::GetLeader() const
+ Raven_Bot* Raven_Team::GetLeader() const
 {
 	Raven_Bot* Leader = nullptr;
 
@@ -27,6 +28,10 @@ void Raven_Team::AddMember(Raven_Bot* Member)
 {
 	Member->AssignTeam(this);
 
+	Member->GetBrain()->RemoveAllSubgoals();
+
+	Member->GetBrain()->AddGoal_FollowTeam();
+
 	m_pMembers.insert_or_assign(Member->ID(), Member);
 
 	debug_con << "Added bot " << Member->ID() << " to team" << ID() << "";
@@ -35,6 +40,8 @@ void Raven_Team::AddMember(Raven_Bot* Member)
 void Raven_Team::RemoveMember(Raven_Bot* Member)
 {
 	Member->AssignTeam(nullptr);
+
+	Member->GetBrain()->RemoveAllSubgoals();
 
 	m_pMembers.erase(Member->ID());
 
