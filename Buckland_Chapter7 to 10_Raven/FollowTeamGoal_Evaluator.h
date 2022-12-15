@@ -14,11 +14,11 @@
 
 #include "Raven_Bot.h"
 
-class FollowTeamGoald_Evaluator : public Goal_Evaluator
+class FollowTeamGoal_Evaluator : public Goal_Evaluator
 {
 public:
 
-	FollowTeamGoald_Evaluator(double bias) :Goal_Evaluator(bias) {}
+	FollowTeamGoal_Evaluator(double bias) :Goal_Evaluator(bias) {}
 
 	double CalculateDesirability(Raven_Bot* pBot) override;
 

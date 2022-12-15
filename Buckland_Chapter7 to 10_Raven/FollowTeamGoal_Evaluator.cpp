@@ -4,7 +4,7 @@
 #include "goals/Raven_Feature.h"
 #include "Raven_Team.h"
 
-double FollowTeamGoald_Evaluator::CalculateDesirability(Raven_Bot* pBot)
+double FollowTeamGoal_Evaluator::CalculateDesirability(Raven_Bot* pBot)
 {
     double Desirability = 0.0;
 
@@ -17,20 +17,21 @@ double FollowTeamGoald_Evaluator::CalculateDesirability(Raven_Bot* pBot)
 
         auto Leader = Team->GetLeader();
 
-        Desirability = Tweaker * Raven_Feature::Health(pBot) * Raven_Feature::TotalWeaponStrength(pBot);
+        Desirability = Tweaker * (1 - Raven_Feature::Health(Leader));
         
-        //bias the value according to the personality of the bot
         Desirability *= m_dCharacterBias;
+
+        Clamp(Desirability, 0, 1);
     }
 
     return Desirability;
 }
 
-void FollowTeamGoald_Evaluator::SetGoal(Raven_Bot* pEnt)
+void FollowTeamGoal_Evaluator::SetGoal(Raven_Bot* pEnt)
 {
 	pEnt->GetBrain()->AddGoal_FollowTeam();
 }
 
-void FollowTeamGoald_Evaluator::RenderInfo(Vector2D Position, Raven_Bot* pBot)
+void FollowTeamGoal_Evaluator::RenderInfo(Vector2D Position, Raven_Bot* pBot)
 {
 }
