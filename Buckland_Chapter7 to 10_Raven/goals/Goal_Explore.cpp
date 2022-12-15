@@ -24,7 +24,7 @@ void Goal_Explore::Activate()
   if (!m_bDestinationIsSet)
   {
     //grab a random location
-    m_CurrentDestination = m_pOwner->GetWorld()->GetMap()->GetRandomNodeLocation();
+    m_CurrentDestination = m_pOwner->GetWorld()->GetMap()->GetRandomNodeLocation()->Pos();
 
     m_bDestinationIsSet = true;
   }

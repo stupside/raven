@@ -110,6 +110,7 @@ public:
   int           GetAmmoRemainingForWeapon(unsigned int weapon_type);
 
   double         ReactionTime()const{return m_dReactionTime;}
+  inline const WeaponMap GetWeapons() const { return m_WeaponMap; }
 
   void          RenderCurrentWeapon()const;
   void          RenderDesirabilities()const;

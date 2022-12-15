@@ -12,6 +12,7 @@
 #include "time/Regulator.h"
 #include "Raven_WeaponSystem.h"
 #include "Raven_SensoryMemory.h"
+#include "Raven_Map.h"
 
 #include "Messaging/Telegram.h"
 #include "Raven_Messages.h"
@@ -21,6 +22,7 @@
 #include "goals/Goal_Think.h"
 
 #include "Debug/DebugConsole.h"
+#include "Triggers/Trigger_WeaponGiver.h"
 
 #include "Raven_Learner.h"
 #include <Game/EntityManager.h>
@@ -431,6 +433,20 @@ void Raven_Bot::ChangeWeapon(unsigned int type)
 void Raven_Bot::FireWeapon(Vector2D pos)
 {
 	m_pWeaponSys->ShootAt(pos);
+}
+
+void Raven_Bot::OnDeath()
+{
+	auto* Team = GetTeam();
+
+	const auto WeaponSpawn = Team->GetWeaponSpawn();
+
+	for (auto& Weapon : GetWeaponSys()->GetWeapons()) {
+
+		GetWorld()->GetMap()->AddWeapon_Giver(new Trigger_WeaponGiver(Weapon.first, 10, WeaponSpawn));
+	}
+
+
 }
 
 //----------------- CalculateExpectedTimeToReachPosition ----------------------

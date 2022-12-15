@@ -164,6 +164,21 @@ void Raven_Map::AddWeapon_Giver(int type_of_weapon, std::ifstream& in)
 }
 
 
+void Raven_Map::AddWeapon_Giver(Trigger_WeaponGiver* wc) {
+    //add it to the appropriate vectors
+    m_TriggerSystem.Register(wc);
+
+    //let the corresponding navgraph node point to this object
+    NavGraph::NodeType& node = m_pNavGraph->GetNode(wc->GraphNodeIndex());
+
+    node.SetExtraInfo(wc);
+
+    //register the entity 
+    EntityMgr->RegisterEntity(wc);
+
+}
+
+
 //------------------------- LoadMap ------------------------------------
 //
 //  sets up the game environment from map file
@@ -361,7 +376,7 @@ void Raven_Map::UpdateTriggerSystem(std::list<Raven_Bot*>& bots)
 //
 //  returns the position of a graph node selected at random
 //-----------------------------------------------------------------------------
-Vector2D Raven_Map::GetRandomNodeLocation()const
+const Raven_Map::GraphNode* Raven_Map::GetRandomNodeLocation()const
 {
   NavGraph::ConstNodeIterator NodeItr(*m_pNavGraph);
   int RandIndex = RandInt(0, m_pNavGraph->NumActiveNodes()-1);
@@ -371,7 +386,7 @@ Vector2D Raven_Map::GetRandomNodeLocation()const
     pN = NodeItr.next();
   }
 
-  return pN->Pos();
+  return pN;
 }
 
 

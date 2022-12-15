@@ -198,6 +198,9 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
 
 		w = new RocketLauncher(m_pOwner); break;
 
+	case type_blaster:
+
+		return;
 	}//end switch
 
 
@@ -206,7 +209,8 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
 
 	if (present)
 	{
-		present->IncrementRounds(w->NumRoundsRemaining());
+		if (w)
+			present->IncrementRounds(w->NumRoundsRemaining());
 
 		delete w;
 	}
@@ -376,6 +380,7 @@ int Raven_WeaponSystem::GetAmmoRemainingForWeapon(unsigned int weapon_type)
 	{
 		return m_WeaponMap[weapon_type]->NumRoundsRemaining();
 	}
+
 
 	return 0;
 }

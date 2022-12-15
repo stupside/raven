@@ -8,12 +8,14 @@
 #include "Raven_Bot.h"
 
 #include "Raven_Messages.h"
+#include "Raven_Map.h"
 
 class Raven_Team
 {
 private:
 
 	unsigned int m_ID;
+	const Raven_Map::GraphNode* m_WeaponSpawn;
 
 	std::map<int, Raven_Bot*> m_pMembers;
 
@@ -39,7 +41,7 @@ private:
 
 public:
 
-	explicit Raven_Team(unsigned int Id) : m_ID(Id), m_pMembers(std::map<int, Raven_Bot*>()) {
+	explicit Raven_Team(unsigned int Id, const Raven_Map::GraphNode* WeaponSpawn) : m_ID(Id), m_WeaponSpawn(WeaponSpawn), m_pMembers(std::map<int, Raven_Bot*>()) {
 	}
 
 	inline unsigned int ID() const {
@@ -47,6 +49,10 @@ public:
 	}
 
 	Raven_Bot* GetLeader() const;
+
+	inline const Raven_Map::GraphNode* GetWeaponSpawn() const { return m_WeaponSpawn; }
+
+	
 
 	inline const std::map<int, Raven_Bot*> GetMembers() const {
 		return m_pMembers;

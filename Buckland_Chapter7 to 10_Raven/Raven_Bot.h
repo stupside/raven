@@ -168,7 +168,8 @@ public:
 	inline bool          isSpawning()const { return m_Status == Status::spawning; }
 
 	inline void          SetSpawning() { m_Status = Status::spawning; }
-	inline void          SetDead() { m_Status = Status::dead; }
+	inline void          SetDead() { OnDeath(); m_Status = Status::dead;  }
+	void				 OnDeath();
 	inline void          SetAlive() { m_Status = Status::alive; }
 
 	double        CalculateTimeToReachPosition(Vector2D pos)const;

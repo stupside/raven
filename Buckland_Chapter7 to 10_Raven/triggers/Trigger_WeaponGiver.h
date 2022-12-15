@@ -14,9 +14,7 @@
 #include "Triggers/Trigger_Respawning.h"
 #include "../Raven_Bot.h"
 #include <iosfwd>
-
-
-
+#include "../Raven_Map.h"
 
 class Trigger_WeaponGiver : public Trigger_Respawning<Raven_Bot>
 {
@@ -30,6 +28,7 @@ public:
 
   //this type of trigger is created when reading a map file
   Trigger_WeaponGiver(std::ifstream& datafile);
+  Trigger_WeaponGiver(const int WeaponType, int radius, const Raven_Map::GraphNode* GraphNode);
 
   //if triggered, this trigger will call the PickupWeapon method of the
   //bot. PickupWeapon will instantiate a weapon of the appropriate type.
