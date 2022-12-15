@@ -26,6 +26,8 @@ private:
 public:
 
   static Raven_UserOptions* Instance();
+
+  bool m_bShowTeam;
   
   bool m_bShowGraph;
 

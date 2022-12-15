@@ -536,12 +536,17 @@ void Raven_Bot::Render()
 	//as long as this value is positive. (see Render)
 	m_iNumUpdatesHitPersistant--;
 
-
 	if (isDead() || isSpawning()) return;
 
-	auto TeamId = GetTeam()->ID();
+	auto Team = GetTeam();
 
-	gdi->SetPenColor(TeamId);
+	if (Team) {
+		gdi->SetPenColor(Team->ID());
+
+		auto TeamInfo = (Team->IsLeadingTeam(this) ? "Team L: " : "Team M: ") + std::to_string(Team->ID());
+
+		gdi->TextAtPos(Pos().x - 40, Pos().y - 20, TeamInfo);
+	}
 
 	m_vecBotVBTrans = WorldTransform(m_vecBotVB,
 		Pos(),

@@ -34,7 +34,7 @@ void Raven_Team::AddMember(Raven_Bot* Member)
 
 	m_pMembers.insert_or_assign(Member->ID(), Member);
 
-	debug_con << "Added bot " << Member->ID() << " to team" << ID() << "";
+	debug_con << "Added bot " << Member->ID() << " to team " << ID() << "";
 }
 
 void Raven_Team::RemoveMember(Raven_Bot* Member)
@@ -45,7 +45,7 @@ void Raven_Team::RemoveMember(Raven_Bot* Member)
 
 	m_pMembers.erase(Member->ID());
 
-	debug_con << "Removed bot " << Member->ID() << " from team" << ID() << "";
+	debug_con << "Removed bot " << Member->ID() << " from team " << ID() << "";
 }
 
 bool Raven_Team::TrySetTeamTarget(Raven_Bot* Target)
@@ -82,5 +82,5 @@ bool Raven_Team::IsLeadingTeam(const Raven_Bot* Bot) const
 {
 	if (Bot == nullptr) return false;
 
-	return GetLeader()->ID() == Bot->ID();
+	return GetLeader() == Bot;
 }
