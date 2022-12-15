@@ -289,6 +289,9 @@
     <ClCompile Include="FollowTeamGoal_Evaluator.cpp">
       <Filter>AI\Goals\goal evaluation</Filter>
     </ClCompile>
+    <ClCompile Include="Trigger_TeamWeaponGiver.cpp">
+      <Filter>AI\Triggers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -644,6 +647,9 @@
     </ClInclude>
     <ClInclude Include="FollowTeamGoal_Evaluator.h">
       <Filter>AI\Goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="Trigger_TeamWeaponGiver.h">
+      <Filter>AI\Triggers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

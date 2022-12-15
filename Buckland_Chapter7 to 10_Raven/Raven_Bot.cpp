@@ -22,7 +22,7 @@
 #include "goals/Goal_Think.h"
 
 #include "Debug/DebugConsole.h"
-#include "Triggers/Trigger_WeaponGiver.h"
+#include "Trigger_TeamWeaponGiver.h"
 
 #include "Raven_Learner.h"
 #include <Game/EntityManager.h>
@@ -439,14 +439,14 @@ void Raven_Bot::OnDeath()
 {
 	auto* Team = GetTeam();
 
-	const auto WeaponSpawn = Team->GetWeaponSpawn();
+	if (Team) {
+		const auto WeaponSpawn = Team->GetWeaponSpawn();
 
-	for (auto& Weapon : GetWeaponSys()->GetWeapons()) {
+		for (auto& Weapon : GetWeaponSys()->GetWeapons()) {
 
-		GetWorld()->GetMap()->AddWeapon_Giver(new Trigger_WeaponGiver(Weapon.first, 10, WeaponSpawn));
+			GetWorld()->GetMap()->AddWeapon_Giver(new Trigger_TeamWeaponGiver(Weapon.first, 10, WeaponSpawn, Team));
+		}
 	}
-
-
 }
 
 //----------------- CalculateExpectedTimeToReachPosition ----------------------

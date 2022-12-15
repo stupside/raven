@@ -32,15 +32,12 @@ public:
 
   //if triggered, this trigger will call the PickupWeapon method of the
   //bot. PickupWeapon will instantiate a weapon of the appropriate type.
-  void Try(Raven_Bot*);
+  void Try(Raven_Bot* Bot);
   
   //draws a symbol representing the weapon type at the trigger's location
   void Render();
 
   void Read (std::ifstream& is);
 };
-
-
-
 
 #endif

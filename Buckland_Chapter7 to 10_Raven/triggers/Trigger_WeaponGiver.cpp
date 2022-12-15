@@ -76,9 +76,6 @@ void Trigger_WeaponGiver::Try(Raven_Bot* pBot)
   } 
 }
 
-
-
-
 void Trigger_WeaponGiver::Read(std::ifstream& in)
 {
   double x, y, r;

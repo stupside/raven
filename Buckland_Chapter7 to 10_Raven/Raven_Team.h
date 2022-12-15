@@ -23,6 +23,15 @@ private:
 		return !GetMembers().empty();
 	}
 
+public:
+
+	explicit Raven_Team(unsigned int Id, const Raven_Map::GraphNode* WeaponSpawn) : m_ID(Id), m_WeaponSpawn(WeaponSpawn), m_pMembers(std::map<int, Raven_Bot*>()) {
+	}
+
+	inline unsigned int ID() const {
+		return m_ID;
+	}
+
 	inline bool HasMember(const Raven_Bot* Bot) const {
 
 		if (Bot == nullptr) return false;
@@ -37,15 +46,6 @@ private:
 		}
 
 		return false;
-	}
-
-public:
-
-	explicit Raven_Team(unsigned int Id, const Raven_Map::GraphNode* WeaponSpawn) : m_ID(Id), m_WeaponSpawn(WeaponSpawn), m_pMembers(std::map<int, Raven_Bot*>()) {
-	}
-
-	inline unsigned int ID() const {
-		return m_ID;
 	}
 
 	Raven_Bot* GetLeader() const;
