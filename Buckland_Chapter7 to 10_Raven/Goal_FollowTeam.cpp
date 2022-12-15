@@ -25,7 +25,19 @@ void Goal_FollowTeam::Activate()
 		}
 		else {
 
-			m_target = Team->GetLeader()->Pos();
+			auto Members = Team->GetMembers();
+
+			m_target.Zero();
+
+			for (auto Member : Members) {
+				m_target += m_target;
+			}
+
+			m_target /= Members.size();
+
+			if (!Bot->canWalkTo(m_target)) {
+				m_target = Team->GetLeader()->Pos();
+			}
 
 			AddSubgoal(new Goal_MoveToPosition(m_pOwner, m_target));
 		}
