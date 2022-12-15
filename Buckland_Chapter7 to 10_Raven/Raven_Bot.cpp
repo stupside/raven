@@ -150,10 +150,7 @@ void Raven_Bot::Update()
 
 			if (Team) {
 				if (Team->IsLeadingTeam(this)) {
-
-					auto ClosestBot = m_pTargSys->GetClosestBot();
-
-					Team->TrySetTeamTarget(ClosestBot);
+					Team->TrySetTeamTarget(m_pTargSys->GetClosestBot(Team->GetMemberIds()));
 				}
 			}
 		}
@@ -163,19 +160,13 @@ void Raven_Bot::Update()
 		{
 			auto* Team = GetTeam();
 
+			m_pTargSys->Update();
+
 			if (Team)
 			{
 				if (Team->IsLeadingTeam(this)) {
-
-					m_pTargSys->Update();
-
-					auto Target = m_pTargSys->GetTarget();
-
 					Team->TrySetTeamTarget(m_pTargSys->GetTarget());
 				}
-			}
-			else {
-				m_pTargSys->Update();
 			}
 		}
 

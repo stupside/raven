@@ -19,10 +19,6 @@ private:
 
 	std::map<int, Raven_Bot*> m_pMembers;
 
-	inline bool HasMembers() const {
-		return !GetMembers().empty();
-	}
-
 public:
 
 	explicit Raven_Team(unsigned int Id, const Raven_Map::GraphNode* WeaponSpawn) : m_ID(Id), m_WeaponSpawn(WeaponSpawn), m_pMembers(std::map<int, Raven_Bot*>()) {
@@ -36,26 +32,28 @@ public:
 
 		if (Bot == nullptr) return false;
 
-		if (HasMembers())
-		{
-			auto id = Bot->ID();
-
-			auto members = GetMembers();
-
-			return members.count(id);
-		}
-
-		return false;
+		return Bot->GetTeam() == this;
 	}
 
 	Raven_Bot* GetLeader() const;
 
 	inline const Raven_Map::GraphNode* GetWeaponSpawn() const { return m_WeaponSpawn; }
 
-	
-
 	inline const std::map<int, Raven_Bot*> GetMembers() const {
 		return m_pMembers;
+	}
+
+	inline const std::set<int> GetMemberIds() const {
+
+		std::set<int> Ids;
+
+		const auto Members = GetMembers();
+
+		for (auto Member : Members) {
+			Ids.insert(Member.first);
+		}
+
+		return Ids;
 	}
 
 	void AddMember(Raven_Bot* Member);

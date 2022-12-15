@@ -4,8 +4,6 @@
 
 #include "Raven_Team.h"
 
-
-
 //-------------------------------- ctor ---------------------------------------
 //-----------------------------------------------------------------------------
 Raven_TargetingSystem::Raven_TargetingSystem(Raven_Bot* owner) :m_pOwner(owner),
@@ -17,7 +15,18 @@ m_pCurrentTarget(0)
 //-----------------------------------------------------------------------------
 void Raven_TargetingSystem::Update()
 {
-	m_pCurrentTarget = m_pOwner->GetTargetSys()->GetClosestBot();
+	auto* Team = m_pOwner->GetTeam();
+
+	if (Team)
+	{
+		if (Team->IsLeadingTeam(m_pOwner)) {
+			m_pCurrentTarget = m_pOwner->GetTargetSys()->GetClosestBot(Team->GetMemberIds());
+		}
+	}
+	else {
+		m_pCurrentTarget = m_pOwner->GetTargetSys()->GetClosestBot(std::set<int>());
+	}
+
 }
 
 
@@ -46,7 +55,7 @@ double Raven_TargetingSystem::GetTimeTargetHasBeenOutOfView()const
 	return m_pOwner->GetSensoryMem()->GetTimeOpponentHasBeenOutOfView(m_pCurrentTarget);
 }
 
-Raven_Bot* Raven_TargetingSystem::GetClosestBot() const
+Raven_Bot* Raven_TargetingSystem::GetClosestBot(std::set<int> exclude) const
 {
 	auto SmallestDistToTarget = MaxDouble;
 
@@ -59,6 +68,8 @@ Raven_Bot* Raven_TargetingSystem::GetClosestBot() const
 	for (CurrentBot; CurrentBot != SensedBots.end(); ++CurrentBot)
 	{
 		if (*CurrentBot == m_pOwner) continue;
+
+		if (exclude.count((*CurrentBot)->ID())) continue;
 
 		if ((*CurrentBot)->isAlive())
 		{

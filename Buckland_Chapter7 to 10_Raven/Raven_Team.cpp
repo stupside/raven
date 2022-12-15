@@ -64,8 +64,6 @@ bool Raven_Team::TrySetTeamTarget(Raven_Bot* Target)
 
 		auto DispatchTo = Bot.first;
 
-		if (IsLeadingTeam(Bot.second)) continue;
-
 		Dispatcher->DispatchMsg(SEND_MSG_IMMEDIATELY, DismatchFrom, DispatchTo, Msg_TeamTarget, DispatchExtraInfos);
 	}
 

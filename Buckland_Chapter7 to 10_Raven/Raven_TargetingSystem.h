@@ -12,7 +12,7 @@
 //-----------------------------------------------------------------------------
 #include "2d/Vector2D.h"
 #include <list>
-
+#include <set>
 
 class Raven_Bot;
 
@@ -70,7 +70,7 @@ public:
   //sets the target pointer to null
   inline void       ClearTarget(){m_pCurrentTarget=0;}
 
-  Raven_Bot* GetClosestBot() const;
+  Raven_Bot* GetClosestBot(std::set<int> exclude) const;
 };
 
 
