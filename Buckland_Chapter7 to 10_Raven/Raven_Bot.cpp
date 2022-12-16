@@ -98,6 +98,10 @@ void Raven_Bot::AssignTeam(Raven_Team* team)
 //-----------------------------------------------------------------------------
 Raven_Bot::~Raven_Bot()
 {
+	if (GetTeam()) {
+		GetTeam()->RemoveMember(this);
+	}
+
 	debug_con << "deleting raven bot (id = " << ID() << ")" << "";
 
 	delete m_pBrain;

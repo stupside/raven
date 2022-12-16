@@ -37,6 +37,7 @@ void Raven_Team::AddMember(Raven_Bot* Member)
 	debug_con << "Added bot " << Member->ID() << " to team " << ID() << "";
 }
 
+
 void Raven_Team::RemoveMember(Raven_Bot* Member)
 {
 	Member->AssignTeam(nullptr);
