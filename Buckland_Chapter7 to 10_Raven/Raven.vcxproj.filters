@@ -295,6 +295,15 @@
     <ClCompile Include="Raven_ShootHitContext.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Projectile_Grenade.cpp">
+      <Filter>Game\Weaponary\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon_Grenade.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon_GrenadeLauncher.cpp">
+      <Filter>Game\Weaponary\weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -655,6 +664,12 @@
       <Filter>AI\Triggers</Filter>
     </ClInclude>
     <ClInclude Include="Raven_ShootHitContext.h" />
+    <ClInclude Include="Projectile_Grenade.h">
+      <Filter>Game\Weaponary\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon_GrenadeLauncher.h">
+      <Filter>Game\Weaponary\weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

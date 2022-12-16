@@ -149,7 +149,7 @@ void RocketLauncher::Render()
                                    m_pOwner->Facing().Perp(),
                                    m_pOwner->Scale());
 
-  gdi->RedPen();
+  gdi->BlackPen();
 
   gdi->ClosedShape(m_vecWeaponVBTrans);
 }

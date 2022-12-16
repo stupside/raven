@@ -224,6 +224,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='boundschecker|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Projectile_Grenade.cpp" />
     <ClCompile Include="Raven_Bot.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -538,12 +539,15 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='boundschecker|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="Trigger_TeamWeaponGiver.cpp" />
+    <ClCompile Include="Weapon_Grenade.cpp" />
+    <ClCompile Include="Weapon_GrenadeLauncher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CData.h" />
     <ClInclude Include="CNeuralNet.h" />
     <ClInclude Include="FollowTeamGoal_Evaluator.h" />
     <ClInclude Include="Goal_FollowTeam.h" />
+    <ClInclude Include="Projectile_Grenade.h" />
     <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Game.h" />
     <ClInclude Include="Raven_Learner.h" />
@@ -660,6 +664,7 @@
     <ClInclude Include="..\Common\2D\WallIntersectionTests.h" />
     <ClInclude Include="..\Common\misc\WindowUtils.h" />
     <ClInclude Include="Trigger_TeamWeaponGiver.h" />
+    <ClInclude Include="Weapon_GrenadeLauncher.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua" />
