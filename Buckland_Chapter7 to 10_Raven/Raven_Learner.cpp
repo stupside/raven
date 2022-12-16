@@ -25,13 +25,13 @@ Raven_Learner::Datas Raven_Learner::GetTargetSet(Raven_Bot* Target) const
 {
 	auto BotTargetingSystem = GetTargetSys();
 
-	auto TargetDistance = Target ? Vec2DDistance(Pos(), Target->Pos()) : 0; // save
+	auto TargetDistance = Target ? Vec2DDistance(Pos(), Target->Pos()) : 0;
 
-	auto TargetVisibleTimeSpan = Target ? GetSensoryMem()->GetTimeOpponentHasBeenVisible(Target) : 0; // save
+	auto TargetVisibleTimeSpan = Target ? GetSensoryMem()->GetTimeOpponentHasBeenVisible(Target) : 0;
 
-	auto TargetIsShootable = BotTargetingSystem->isTargetShootable(); // save
-	auto TargetInFOV = BotTargetingSystem->isTargetWithinFOV(); // save
-	auto TargetHealth = Target ? Target->Health() : 0; // save
+	auto TargetIsShootable = BotTargetingSystem->isTargetShootable();
+	auto TargetInFOV = BotTargetingSystem->isTargetWithinFOV();
+	auto TargetHealth = Target ? Target->Health() : 0;
 
 	Raven_Learner::Datas Datas
 	{
@@ -59,7 +59,7 @@ void Raven_Learner::OnShootHit(Raven_ShootHitContext Hit, Raven_Bot* Target)
 
 	auto Targets = GetTargetSet(Target);
 
-	Targets.push_back(Hit.Hit); // decision
+	Targets.push_back(Hit.Hit);
 
 	auto* Neural = Raven_Learner::Neural::Instance();
 
